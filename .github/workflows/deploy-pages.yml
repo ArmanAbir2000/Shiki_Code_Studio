@@ -58,3 +58,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          # Keep previously published hashed chunks so visitors with an
+          # older entry chunk cached still resolve their files after a
+          # new deploy (avoids "error loading dynamically imported module").
+          keep_files: true
