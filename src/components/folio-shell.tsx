@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { FolioFx } from "@/components/folio-fx";
 import { FolioThemeToggle } from "@/components/folio-theme-toggle";
 
 /** Editorial header used on every screen while folio is active. */
@@ -47,6 +48,7 @@ export function FolioShell({ children }: { children: React.ReactNode }) {
       <FolioHeader />
       <main className="fl-page-body">{children}</main>
       <FolioFooter />
+      <FolioFx />
     </div>
   );
 }

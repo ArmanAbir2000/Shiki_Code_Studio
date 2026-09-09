@@ -48,6 +48,11 @@ export function FolioThemeToggle() {
       /* private mode — non-fatal */
     }
     setDark(applyMode(next));
+    window.dispatchEvent(
+      new CustomEvent("folio:toast", {
+        detail: next === "dark" ? "DARK INK" : "PAPER",
+      }),
+    );
   }, [dark]);
 
   return (

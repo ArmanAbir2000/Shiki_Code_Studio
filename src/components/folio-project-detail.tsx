@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { FolioFx } from "@/components/folio-fx";
 import { FolioThemeToggle } from "@/components/folio-theme-toggle";
 import { ProjectVideo } from "@/components/project-video";
 import { StoreBadges } from "@/components/store-badges";
@@ -54,7 +55,7 @@ function Sec({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="fl-cs-sec">
+    <section className="fl-cs-sec fl-rv">
       <header>
         <span>{n}</span>
         <h4>{title}</h4>
@@ -240,6 +241,7 @@ export function FolioProjectDetail({
         )}
         <p className="fl-cs-end fl-mono">END OF CASE — {p.title.toUpperCase()}</p>
       </div>
+      <FolioFx />
     </div>
   );
 }

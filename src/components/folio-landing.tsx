@@ -1,6 +1,8 @@
+import type { CSSProperties } from "react";
 import { Link } from "react-router";
 import { FolioGithub } from "@/components/folio-github";
 import { FolioThemeToggle } from "@/components/folio-theme-toggle";
+import { FolioFx } from "@/components/folio-fx";
 import { Marquee } from "@/components/motion-primitives";
 import type {
   AboutContent,
@@ -53,7 +55,7 @@ const VARIANTS = ["fl-a", "fl-b", "fl-c"] as const;
 function SpreadMedia({ p, index }: { p: FolioProject; index: number }) {
   const second = p.shots?.[0];
   return (
-    <figure className="fl-media">
+    <figure className="fl-media fl-rv" style={{ "--d": ".1s" } as CSSProperties}>
       <div className="fl-plate">
         {p.cover ? (
           <img src={p.cover} alt="" loading="lazy" decoding="async" />
@@ -135,31 +137,44 @@ export function FolioLanding({
       <main id="fl-top">
         <section className="fl-hero" aria-label="Introduction">
           <div className="fl-wrap">
-            <div className="fl-hero-roles fl-mono">
+            <div className="fl-hero-roles fl-mono fl-hrv" style={{ "--d": ".35s" } as CSSProperties}>
               <span>
                 <b>FLUTTER DEVELOPER</b> / APP DEVELOPER / PRODUCT ENGINEER
               </span>
               <span>FOLIO 01 — SELECTED WORK 2023–2026</span>
             </div>
             <h1 className="fl-name" aria-label="Arman Abir">
-              <span className="fl-line">ARMAN</span>
-              <span className="fl-line fl-indent">
-                ABIR<span className="fl-mark" aria-hidden="true" />
+              <span className="fl-line" aria-hidden="true">
+                <span className="fl-hl" style={{ "--i": 0 } as CSSProperties}>A</span>
+                <span className="fl-hl" style={{ "--i": 1 } as CSSProperties}>R</span>
+                <span className="fl-hl" style={{ "--i": 2 } as CSSProperties}>M</span>
+                <span className="fl-hl" style={{ "--i": 3 } as CSSProperties}>A</span>
+                <span className="fl-hl" style={{ "--i": 4 } as CSSProperties}>N</span>
+              </span>
+              <span className="fl-line fl-indent" aria-hidden="true">
+                <span className="fl-hl" style={{ "--i": 5 } as CSSProperties}>A</span>
+                <span className="fl-hl" style={{ "--i": 6 } as CSSProperties}>B</span>
+                <span className="fl-hl" style={{ "--i": 7 } as CSSProperties}>I</span>
+                <span className="fl-hl" style={{ "--i": 8 } as CSSProperties}>R</span>
+                <span className="fl-mark fl-hrv" style={{ "--d": "1.1s" } as CSSProperties} />
               </span>
             </h1>
-            <p className="fl-sub">
+            <p className="fl-sub fl-hrv" style={{ "--d": ".85s" } as CSSProperties}>
               Founder of <em>ShikiCodeStudio</em> — {hero.subtitle}
             </p>
             <div className="fl-foot fl-mono">
-              <p>
+              <p className="fl-hrv" style={{ "--d": ".95s" } as CSSProperties}>
                 <b>DHAKA, BANGLADESH</b>23.8103° N, 90.4125° E
               </p>
-              <p>
+              <p className="fl-hrv" style={{ "--d": "1.05s" } as CSSProperties}>
                 <b>FLUTTER · DART · LARAVEL</b>FIREBASE · REST APIs
               </p>
-              <p className="fl-yr">2026</p>
+              <p className="fl-yr fl-hrv" style={{ "--d": "1.15s" } as CSSProperties}>2026</p>
             </div>
           </div>
+          <p className="fl-cue fl-hrv" style={{ "--d": "1s" } as CSSProperties} aria-hidden="true">
+            SCROLL <span className="fl-cue-arr">↓</span>
+          </p>
         </section>
 
         <div className="fl-marquee" aria-hidden="true">
@@ -181,30 +196,30 @@ export function FolioLanding({
             <span className="fl-mono">FIELD NOTES</span>
           </div>
           <div className="fl-wrap fl-mani">
-            <p className="fl-lede">
+            <p className="fl-lede fl-rv">
               I build mobile products where <em>engineering</em> and{" "}
               <em>visual language</em> meet — {hero.title}
             </p>
             <div className="fl-meta">
-              <div className="fl-mm">
+              <div className="fl-mm fl-rv" style={{ "--d": ".05s" } as CSSProperties}>
                 <small>FIELD</small>APP DEVELOPMENT
               </div>
-              <div className="fl-mm">
+              <div className="fl-mm fl-rv" style={{ "--d": ".12s" } as CSSProperties}>
                 <small>FOCUS</small>FLUTTER / PRODUCT / UI
               </div>
-              <div className="fl-mm">
+              <div className="fl-mm fl-rv" style={{ "--d": ".19s" } as CSSProperties}>
                 <small>BASED IN</small>DHAKA, BANGLADESH
               </div>
-              <div className="fl-mm">
+              <div className="fl-mm fl-rv" style={{ "--d": ".26s" } as CSSProperties}>
                 <small>AVAILABLE</small>
                 <span className="fl-dot" aria-hidden="true" />
                 FOR SELECTED WORK
               </div>
             </div>
             <div className="fl-words" aria-label="Build. Break. Refine.">
-              <span className="fl-w">BUILD.</span>
-              <span className="fl-w fl-outline">BREAK.</span>
-              <span className="fl-w fl-serif">Refine.</span>
+              <span className="fl-w fl-rv">BUILD.</span>
+              <span className="fl-w fl-outline fl-rv" style={{ "--d": ".1s" } as CSSProperties}>BREAK.</span>
+              <span className="fl-w fl-serif fl-rv" style={{ "--d": ".2s" } as CSSProperties}>Refine.</span>
             </div>
           </div>
         </section>
@@ -215,12 +230,12 @@ export function FolioLanding({
             <span className="fl-mono">{spreads.length} SPREADS</span>
           </div>
           <div className="fl-wrap fl-work-intro">
-            <h2>
+            <h2 className="fl-rv">
               SELECTED
               <br />
               WORK
             </h2>
-            <p className="fl-mono">
+            <p className="fl-mono fl-rv" style={{ "--d": ".1s" } as CSSProperties}>
               EACH PROJECT DOCUMENTED AS A SPREAD — OPEN THE CASE STUDIES.
             </p>
           </div>
@@ -230,27 +245,27 @@ export function FolioLanding({
                 key={p.slug + i}
                 className={"fl-spread " + VARIANTS[i % VARIANTS.length]}
               >
-                <div className="fl-num">
+                <div className="fl-num fl-rv">
                   {String(i + 1).padStart(2, "0")}
                   <small>/{String(spreads.length).padStart(2, "0")}</small>
                 </div>
-                <h3 className="fl-title">{p.title}</h3>
-                <p className="fl-tag fl-mono">
+                <h3 className="fl-title fl-rv" style={{ "--d": ".04s" } as CSSProperties}>{p.title}</h3>
+                <p className="fl-tag fl-mono fl-rv" style={{ "--d": ".08s" } as CSSProperties}>
                   {(p.category ?? "FLUTTER APP").toUpperCase()} · {p.year ?? ""}
                 </p>
-                <div className="fl-body">
+                <div className="fl-body fl-rv" style={{ "--d": ".12s" } as CSSProperties}>
                   <p>{p.summary}</p>
                 </div>
                 <SpreadMedia p={p} index={i} />
-                <div className="fl-stack fl-mono">
+                <div className="fl-stack fl-mono fl-rv">
                   <small>STACK</small>
                   {(p.stack ?? p.tags).slice(0, 6).join(" · ").toUpperCase()}
                 </div>
-                <div className="fl-side fl-mono">
+                <div className="fl-side fl-mono fl-rv">
                   <span>
                     TAGS <b>{p.tags.slice(0, 3).join(", ").toUpperCase()}</b>
                   </span>
-                  <Link className="fl-open" to={"/projects/" + p.slug}>
+                  <Link className="fl-open" to={"/projects/" + p.slug} data-cursor="OPEN CASE">
                     OPEN CASE →
                   </Link>
                 </div>
@@ -401,19 +416,19 @@ export function FolioLanding({
             <span className="fl-mono">END OF FOLIO</span>
           </div>
           <div className="fl-wrap">
-            <a className="fl-big" href={mail} aria-label="Email Arman Abir">
-              <span>LET'S</span>
-              <span className="fl-outline">BUILD</span>
-              <span>
+            <a className="fl-big" href={mail} data-cursor="OPEN" aria-label="Email Arman Abir">
+              <span className="fl-rv">LET'S</span>
+              <span className="fl-outline fl-rv" style={{ "--d": ".08s" } as CSSProperties}>BUILD</span>
+              <span className="fl-rv" style={{ "--d": ".16s" } as CSSProperties}>
                 SOMETHING<span className="fl-dotr">.</span>
               </span>
             </a>
             <div className="fl-contact-grid">
-              <div>
+              <div className="fl-rv">
                 <span className="fl-mono">WRITE TO</span>
                 <br />
                 <br />
-                <a className="fl-mail" href={mail}>
+                <a className="fl-mail" href={mail} data-cursor="COPY" data-copy={socials.email}>
                   {socials.email}
                 </a>
                 <div className="fl-socials fl-mono">
@@ -450,6 +465,7 @@ export function FolioLanding({
           </div>
         </section>
       </main>
+      <FolioFx />
     </div>
   );
 }

@@ -114,18 +114,18 @@ export default function Projects() {
           ) : (
             filtered.map((p, i) => (
               <article key={p._id} className="fl-spread">
-                <div className="fl-num">
+                <div className="fl-num fl-rv">
                   {String(i + 1).padStart(2, "0")}
                   <small>/{String(filtered.length).padStart(2, "0")}</small>
                 </div>
-                <h3 className="fl-title">{p.title}</h3>
-                <p className="fl-tag fl-mono">
+                <h3 className="fl-title fl-rv">{p.title}</h3>
+                <p className="fl-tag fl-mono fl-rv">
                   {(p.category ?? "FLUTTER APP").toUpperCase()} · {p.year}
                 </p>
-                <div className="fl-body">
+                <div className="fl-body fl-rv">
                   <p>{p.summary}</p>
                 </div>
-                <figure className="fl-media">
+                <figure className="fl-media fl-rv">
                   <div className="fl-plate">
                     {p.cover ? (
                       <img src={p.cover} alt="" loading="lazy" />
@@ -148,15 +148,15 @@ export default function Projects() {
                     <span>{p.year}</span>
                   </figcaption>
                 </figure>
-                <div className="fl-stack fl-mono">
+                <div className="fl-stack fl-mono fl-rv">
                   <small>STACK</small>
                   {(p.stack ?? []).slice(0, 6).join(" · ").toUpperCase()}
                 </div>
-                <div className="fl-side fl-mono">
+                <div className="fl-side fl-mono fl-rv">
                   <span>
                     TAGS <b>{p.tags.slice(0, 3).join(", ").toUpperCase()}</b>
                   </span>
-                  <Link className="fl-open" to={"/projects/" + p.slug}>
+                  <Link className="fl-open" to={"/projects/" + p.slug} data-cursor="OPEN CASE">
                     OPEN CASE →
                   </Link>
                 </div>

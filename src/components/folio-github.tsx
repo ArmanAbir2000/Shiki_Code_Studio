@@ -176,6 +176,7 @@ export function FolioGithub({ cache }: { cache: FolioGhCache }) {
           href="https://github.com/ArmanAbir2000"
           target="_blank"
           rel="noreferrer"
+          data-cursor="OPEN"
         >
           VIEW PROFILE ↗
         </a>
@@ -197,6 +198,7 @@ export function FolioGithub({ cache }: { cache: FolioGhCache }) {
                 href={"https://github.com/" + repo}
                 target="_blank"
                 rel="noreferrer"
+                data-cursor="OPEN"
               >
                 <b>{name.toUpperCase()}</b>
                 <span className="fl-gr-url">{repo.toUpperCase()}</span>
