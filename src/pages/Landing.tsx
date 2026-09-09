@@ -225,6 +225,7 @@ export default function Landing() {
           year: p.year,
           category: p.category,
           cover: p.cover,
+          shots: p.shots ?? [],
         }))}
         github={githubCache as never}
       />

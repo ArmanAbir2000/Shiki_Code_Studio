@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { FolioGithub } from "@/components/folio-github";
+import { FolioThemeToggle } from "@/components/folio-theme-toggle";
 import type {
   AboutContent,
   Capability,
@@ -19,6 +20,7 @@ export type FolioProject = {
   year?: number | string;
   category?: string;
   cover?: string;
+  shots?: string[];
 };
 
 export type FolioGithub = {
@@ -47,17 +49,38 @@ type Props = {
 
 const VARIANTS = ["fl-a", "fl-b", "fl-c"] as const;
 
-function SpreadMedia({ p }: { p: FolioProject }) {
-  if (!p.cover) return null;
+function SpreadMedia({ p, index }: { p: FolioProject; index: number }) {
+  const second = p.shots?.[0];
   return (
     <figure className="fl-media">
       <div className="fl-plate">
-        <img src={p.cover} alt="" loading="lazy" decoding="async" />
+        {p.cover ? (
+          <img src={p.cover} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <div className="fl-plate-fb" aria-hidden="true">
+            <span className="fl-plate-fb-num">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="fl-plate-fb-title">{p.title.toUpperCase()}</span>
+            <span className="fl-plate-fb-tag">
+              {(p.category ?? "FLUTTER APP").toUpperCase()} — {p.year ?? ""}
+            </span>
+          </div>
+        )}
       </div>
       <figcaption className="fl-cap">
         <span>PLATE — {p.title.toUpperCase()}</span>
         <span>{p.year ?? ""}</span>
       </figcaption>
+      {second ? (
+        <div className="fl-plate fl-crop">
+          <img src={second} alt="" loading="lazy" decoding="async" />
+        </div>
+      ) : (
+        <div className="fl-plate fl-crop fl-crop-fb" aria-hidden="true">
+          <span>{(p.stack ?? p.tags).slice(0, 2).join(" · ").toUpperCase()}</span>
+        </div>
+      )}
     </figure>
   );
 }
@@ -85,8 +108,11 @@ export function FolioLanding({
         <span className="fl-mono">
           <a href="#fl-top">ARMAN ABIR — FLUTTER DEVELOPER</a>
         </span>
-        <span className="fl-hdr-r fl-mono">
-          DHAKA · <a href="#fl-contact">AVAILABLE</a>
+        <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span className="fl-hdr-r fl-mono">
+            DHAKA · <a href="#fl-contact">AVAILABLE</a>
+          </span>
+          <FolioThemeToggle />
         </span>
       </header>
 
@@ -195,7 +221,7 @@ export function FolioLanding({
                 <div className="fl-body">
                   <p>{p.summary}</p>
                 </div>
-                <SpreadMedia p={p} />
+                <SpreadMedia p={p} index={i} />
                 <div className="fl-stack fl-mono">
                   <small>STACK</small>
                   {(p.stack ?? p.tags).slice(0, 6).join(" · ").toUpperCase()}

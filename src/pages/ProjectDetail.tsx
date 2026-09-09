@@ -6,6 +6,8 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { FolioProjectDetail } from "@/components/folio-project-detail";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import { StoreBadges } from "@/components/store-badges";
 import { ProjectVideo } from "@/components/project-video";
 import { MaskText } from "@/components/motion-primitives";
@@ -36,6 +38,8 @@ function NotFound() {
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const project = useQuery(api.portfolio.getProject, slug ? { slug } : "skip");
+  const all = useQuery(api.portfolio.listProjects, {});
+  const { theme } = useSiteTheme();
 
   // Per-project share card: title + summary + cover as og:image when loaded.
   useDocumentMeta({
@@ -53,6 +57,40 @@ export default function ProjectDetail() {
         </main>
         <SiteFooter />
       </div>
+    );
+  }
+
+  if (theme === "folio" && project) {
+    const list = all ?? [];
+    const idx = list.findIndex((p) => p.slug === project.slug);
+    const nxt = idx >= 0 ? list[(idx + 1) % list.length] : null;
+    return (
+      <FolioProjectDetail
+        project={{
+          slug: project.slug,
+          title: project.title,
+          summary: project.summary,
+          description: project.description,
+          category: project.category,
+          tags: project.tags ?? [],
+          stack: project.stack ?? [],
+          highlights: project.highlights ?? [],
+          year: project.year,
+          featured: project.featured,
+          liveUrl: project.liveUrl,
+          repoUrl: project.repoUrl,
+          playUrl: project.playUrl,
+          appStoreUrl: project.appStoreUrl,
+          videoUrl: project.videoUrl,
+          cover: project.cover,
+          shots: project.shots ?? [],
+        }}
+        next={
+          nxt && nxt.slug !== project.slug
+            ? { slug: nxt.slug, title: nxt.title }
+            : null
+        }
+      />
     );
   }
 
