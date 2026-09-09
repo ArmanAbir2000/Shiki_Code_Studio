@@ -11,7 +11,7 @@
         var valid = ["studio", "brutal", "glass", "terminal", "editorial", "bento", "swiss", "aurora", "cyberpunk", "clay", "popart", "y2k", "retro", "bohemian", "handwritten", "pixel", "folio"];
         var light = { brutal: 1, editorial: 1, bento: 1, swiss: 1, clay: 1, popart: 1, y2k: 1, retro: 1, bohemian: 1, handwritten: 1, folio: 1 };
         var layout = { studio: "classic", popart: "classic", glass: "cinematic", aurora: "cinematic", editorial: "print", retro: "print", bohemian: "print", folio: "print", terminal: "console", handwritten: "console", pixel: "console", brutal: "playful", bento: "playful", cyberpunk: "playful", clay: "playful", y2k: "playful", swiss: "swiss" };
-        var id = valid.indexOf(t) !== -1 ? t : "studio";
+        var id = valid.indexOf(t) !== -1 ? t : "folio";
         document.documentElement.dataset.theme = id;
         document.documentElement.dataset.layout = layout[id] || "classic";
         if (id === "folio") {
@@ -31,9 +31,12 @@
           document.documentElement.style.colorScheme = "dark";
         }
       } catch (e) {
-        document.documentElement.classList.add("dark");
-        document.documentElement.dataset.theme = "studio";
-        document.documentElement.dataset.layout = "classic";
+        // localStorage unavailable (private mode) — paint the default theme
+        // on paper, matching DEFAULT_THEME in src/lib/themes.ts.
+        document.documentElement.classList.remove("dark");
+        document.documentElement.dataset.theme = "folio";
+        document.documentElement.dataset.layout = "print";
+        document.documentElement.style.colorScheme = "light";
       }
     })();
   </script>
@@ -61,7 +64,7 @@
     with src/lib/seo.ts. Update the absolute URLs when a custom domain lands.
   -->
   <link rel="canonical" href="https://armanabir2000.github.io/Shiki_Code_Studio/" />
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#F2EFE6" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Shiki Code Studio" />
@@ -137,7 +140,7 @@
     ]
   }
   </script>
-  <script type="module" crossorigin src="/Shiki_Code_Studio/assets/index-BFriQjuS.js"></script>
+  <script type="module" crossorigin src="/Shiki_Code_Studio/assets/index-BMogqBTg.js"></script>
   <link rel="modulepreload" crossorigin href="/Shiki_Code_Studio/assets/react-vendor-fj4TkgEY.js">
   <link rel="modulepreload" crossorigin href="/Shiki_Code_Studio/assets/framer-motion-DWEAiogH.js">
   <link rel="modulepreload" crossorigin href="/Shiki_Code_Studio/assets/radix-ui-CbdshiJo.js">
