@@ -1873,7 +1873,8 @@ html[data-theme="folio"].dark body::before {
   background: linear-gradient(90deg, currentColor 0 50%, transparent 50% 100%);
   display: block;
 }
-/* Top nav like the Shiki base header — mono links + solid call button. */
+/* Top nav like the Shiki base header — mono links + solid call button.
+   Hardcoded folio red so dashboard palette overlays can't wash it out. */
 .fl-nav {
   display: flex;
   align-items: center;
@@ -1890,8 +1891,8 @@ html[data-theme="folio"].dark body::before {
 .fl-cta {
   display: inline-flex;
   align-items: center;
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: #e23a21;
+  color: #f2efe6;
   font-family: "Space Mono", monospace;
   font-size: 10px;
   font-weight: 700;
@@ -1905,6 +1906,20 @@ html[data-theme="folio"].dark body::before {
 .fl-cta:hover {
   background: var(--foreground);
   color: var(--background);
+}
+html[data-theme="folio"].dark .fl-cta {
+  background: #ff5a3c;
+  color: #14150f;
+}
+html[data-theme="folio"].dark .fl-cta:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-theme="folio"]:not(.folio-manual):not(.dark) .fl-cta {
+    background: #ff5a3c;
+    color: #14150f;
+  }
 }
 /* Stack marquee under the hero — same component as the base design,
    restyled with folio rules instead of its own section. */
@@ -2037,8 +2052,10 @@ html[data-theme="folio"] * {
   text-transform: uppercase;
 }
 .fl-hdr {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 40;
   display: flex;
   justify-content: space-between;
@@ -2083,8 +2100,8 @@ html[data-theme="folio"] * {
   }
 }
 .fl-hero {
-  min-height: calc(100svh - 57px);
-  min-height: calc(100dvh - 57px);
+  min-height: 100svh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -3158,7 +3175,7 @@ a .fl-outline:hover {
 /* Folio case-study detail — mirrors the portfolio #case overlay. */
 .fl-cs-top {
   position: sticky;
-  top: 56px;
+  top: 57px;
   z-index: 20;
   display: flex;
   justify-content: space-between;
@@ -3393,6 +3410,9 @@ a .fl-outline:hover {
   padding: 0 0 clamp(3rem, 8vh, 5rem);
 }
 /* Inner folio pages — shared body rhythm + archive tools + 404. */
+.fl-page {
+  padding-top: 57px;
+}
 .fl-page-body {
   padding-top: 40px;
   min-height: 60vh;
