@@ -23,6 +23,7 @@ const PREVIEW_FONT: Partial<Record<ThemeId, string>> = {
   bohemian: "'Cormorant Garamond', Georgia, serif",
   handwritten: "'Caveat', cursive",
   pixel: "'Press Start 2P', monospace",
+  folio: "'Archivo', sans-serif",
 };
 
 const PREVIEW_RADIUS: Partial<Record<ThemeId, number>> = {
@@ -39,6 +40,7 @@ const PREVIEW_RADIUS: Partial<Record<ThemeId, number>> = {
   y2k: 18,
   bohemian: 16,
   retro: 14,
+  folio: 2,
 };
 
 const PREVIEW_SHADOW: Partial<Record<ThemeId, string>> = {

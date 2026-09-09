@@ -27,6 +27,7 @@ export const THEME_IDS = [
   "bohemian",
   "handwritten",
   "pixel",
+  "folio",
 ] as const;
 
 export type ThemeId = (typeof THEME_IDS)[number];
@@ -375,6 +376,25 @@ export const THEMES: ThemeDef[] = [
       text: "#e8e8e8",
       mutedText: "#8a8aa0",
       accent: "#3ddc84",
+    },
+  },
+  {
+    id: "folio",
+    name: "Folio Editorial",
+    tagline: "Paper & signal red",
+    description:
+      "Warm paper ground, ink rules, Archivo display with Instrument Serif italics and Space Mono labels — signal-red accent, grain included.",
+    mode: "light",
+    layout: "print",
+    fontLabel: "Archivo + Instrument Serif + Space Mono",
+    metaColor: "#F2EFE6",
+    swatch: {
+      bg: "#F2EFE6",
+      surface: "#E9E5D8",
+      border: "#17150F",
+      text: "#17150F",
+      mutedText: "#6B6557",
+      accent: "#E23A21",
     },
   },
 ];

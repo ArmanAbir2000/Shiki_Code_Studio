@@ -1721,6 +1721,177 @@ html[data-theme="pixel"] * {
   scrollbar-color: var(--primary) var(--background);
 }
 
+/* ---- Folio Editorial — arman-abir-portfolio paper & signal red ------------ */
+
+html[data-theme="folio"] {
+  color-scheme: light;
+  --radius: 0.125rem;
+  --background: #f2efe6;
+  --foreground: #17150f;
+  --card: #e9e5d8;
+  --card-foreground: #17150f;
+  --popover: #f2efe6;
+  --popover-foreground: #17150f;
+  --primary: #e23a21;
+  --primary-foreground: #f2efe6;
+  --secondary: #e9e5d8;
+  --secondary-foreground: #17150f;
+  --muted: #e9e5d8;
+  --muted-foreground: #6b6557;
+  --accent: #e9e5d8;
+  --accent-foreground: #17150f;
+  --destructive: #be2e11;
+  --border: #d3ccb8;
+  --input: #17150f;
+  --ring: #e23a21;
+  --chart-1: #e23a21;
+  --chart-2: #1e3fe0;
+  --chart-3: #17150f;
+  --chart-4: #6b6557;
+  --chart-5: #be2e11;
+  --sidebar: #e9e5d8;
+  --sidebar-foreground: #17150f;
+  --sidebar-primary: #e23a21;
+  --sidebar-primary-foreground: #f2efe6;
+  --sidebar-accent: #e9e5d8;
+  --sidebar-accent-foreground: #17150f;
+  --sidebar-border: #d3ccb8;
+  --sidebar-ring: #e23a21;
+  --app-font-body: "Archivo", Helvetica, Arial, sans-serif;
+  --app-font-display: "Archivo", Helvetica, Arial, sans-serif;
+  --display-tracking: -0.025em;
+  --marquee-speed: 38s;
+  --pulse-speed: 2s;
+}
+
+/* Auto-dark follows the portfolio's own dark paper when the OS asks for it. */
+@media (prefers-color-scheme: dark) {
+  html[data-theme="folio"] {
+    color-scheme: dark;
+    --background: #14150f;
+    --foreground: #efebdf;
+    --card: #1d1f18;
+    --card-foreground: #efebdf;
+    --popover: #14150f;
+    --popover-foreground: #efebdf;
+    --primary: #ff5a3c;
+    --primary-foreground: #14150f;
+    --secondary: #1d1f18;
+    --secondary-foreground: #efebdf;
+    --muted: #1d1f18;
+    --muted-foreground: #9e9787;
+    --accent: #1d1f18;
+    --accent-foreground: #efebdf;
+    --destructive: #ff5a3c;
+    --border: #3a382f;
+    --input: #efebdf;
+    --ring: #ff5a3c;
+    --chart-1: #ff5a3c;
+    --chart-2: #5c7bff;
+    --chart-3: #efebdf;
+    --chart-4: #9e9787;
+    --chart-5: #ff5a3c;
+    --sidebar: #1d1f18;
+    --sidebar-foreground: #efebdf;
+    --sidebar-primary: #ff5a3c;
+    --sidebar-primary-foreground: #14150f;
+    --sidebar-accent: #1d1f18;
+    --sidebar-accent-foreground: #efebdf;
+    --sidebar-border: #3a382f;
+    --sidebar-ring: #ff5a3c;
+  }
+}
+
+/* Paper grain over everything — the portfolio's signature SVG noise. */
+html[data-theme="folio"] body::before {
+  content: "";
+  position: fixed;
+  inset: -40%;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.11;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0 0 0 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+  background-size: 240px;
+  animation: theme-aurora-drift 1.1s steps(6) infinite;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-theme="folio"] body::before {
+    opacity: 0.05;
+    mix-blend-mode: screen;
+  }
+}
+
+/* Display type: heavy uppercase Archivo, tight like the portfolio hero. */
+html[data-theme="folio"] h1,
+html[data-theme="folio"] h2 {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.94;
+}
+html[data-theme="folio"] h1 {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+}
+html[data-theme="folio"] h1 em,
+html[data-theme="folio"] h2 em {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+/* Mono labels on buttons; ink fill on hover like .s-open. */
+html[data-theme="folio"] [data-slot="button"] {
+  font-family: "Space Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 0;
+}
+html[data-theme="folio"] [data-slot="button"][data-variant="default"],
+html[data-theme="folio"] [data-slot="button"][data-variant="outline"],
+html[data-theme="folio"] [data-slot="button"][data-variant="secondary"] {
+  border: 1px solid var(--input);
+}
+html[data-theme="folio"] [data-slot="button"][data-variant="default"]:hover:not(:disabled),
+html[data-theme="folio"] [data-slot="button"][data-variant="outline"]:hover:not(:disabled),
+html[data-theme="folio"] [data-slot="button"][data-variant="secondary"]:hover:not(:disabled) {
+  background: var(--input);
+  color: var(--background);
+}
+/* Sharp plates, hairline rules, serif drop caps. */
+html[data-theme="folio"] [data-slot="card"] {
+  border-radius: 0;
+  box-shadow: none;
+}
+html[data-theme="folio"] blockquote {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 1.25em;
+  line-height: 1.4;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
+}
+html[data-theme="folio"] .drop-cap::first-letter {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 3em;
+  float: left;
+  line-height: 0.78;
+  padding: 0.06em 0.1em 0 0;
+}
+html[data-theme="folio"] ::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+html[data-theme="folio"],
+html[data-theme="folio"] * {
+  scrollbar-color: var(--foreground) var(--background);
+}
+
 /* ---- Structure — per-theme layout signatures ----------------------------
    Layout, not just paint: each theme re-composes the page skeleton —
    section divider rhythm, card geometry (tilt, tile mosaic, pills,
@@ -1869,6 +2040,15 @@ html[data-theme="handwritten"] [data-slot="card"]::before {
 html[data-theme="pixel"] section[class*="border-t"] {
   border-top-width: 4px;
   border-top-color: var(--border);
+}
+
+/* Folio Editorial: single hairline ink rules between sections. */
+html[data-theme="folio"] section[class*="border-t"] {
+  border-top-width: 1px;
+  border-top-color: var(--border);
+}
+html[data-theme="folio"] section:nth-of-type(even)[class*="border-t"] {
+  background: color-mix(in oklab, var(--secondary) 55%, transparent);
 }
 
 /* Glass / Glassmorphism: whisper-light aurora rules. */
@@ -2048,6 +2228,7 @@ html[data-theme="handwritten"]
   html[data-theme="glass"] body::before,
   html[data-theme="aurora"] body::before,
   html[data-theme="clay"] body::before,
+  html[data-theme="folio"] body::before,
   html[data-theme="y2k"] body::before {
     animation: none;
   }
