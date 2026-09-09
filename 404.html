@@ -14,7 +14,14 @@
         var id = valid.indexOf(t) !== -1 ? t : "studio";
         document.documentElement.dataset.theme = id;
         document.documentElement.dataset.layout = layout[id] || "classic";
-        if (light[id]) {
+        if (id === "folio") {
+          // Folio has its own LIGHT/DARK button (like the portfolio).
+          // Explicit choice wins; otherwise follow the OS.
+          var fm = localStorage.getItem("shiki-folio-mode");
+          var fdark = fm === "dark" || (fm !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.classList.toggle("dark", fdark);
+          document.documentElement.style.colorScheme = fdark ? "dark" : "light";
+        } else if (light[id]) {
           document.documentElement.classList.remove("dark");
           document.documentElement.style.colorScheme = "light";
         } else {
@@ -128,11 +135,11 @@
     ]
   }
   </script>
-  <script type="module" crossorigin src="/Shiki_Code_Studio/assets/index-BbQhmrVZ.js"></script>
+  <script type="module" crossorigin src="/Shiki_Code_Studio/assets/index-BJsOWNqg.js"></script>
   <link rel="modulepreload" crossorigin href="/Shiki_Code_Studio/assets/react-vendor-fj4TkgEY.js">
   <link rel="modulepreload" crossorigin href="/Shiki_Code_Studio/assets/framer-motion-DWEAiogH.js">
   <link rel="modulepreload" crossorigin href="/Shiki_Code_Studio/assets/radix-ui-CbdshiJo.js">
-  <link rel="stylesheet" crossorigin href="/Shiki_Code_Studio/assets/index-C8OiK11j.css">
+  <link rel="stylesheet" crossorigin href="/Shiki_Code_Studio/assets/index-CBEufdbL.css">
 </head>
 
 
