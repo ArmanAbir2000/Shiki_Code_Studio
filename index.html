@@ -18,8 +18,10 @@
           // Folio has its own LIGHT/DARK button (like the portfolio).
           // Explicit choice wins; otherwise follow the OS.
           var fm = localStorage.getItem("shiki-folio-mode");
+          var manual = fm === "dark" || fm === "light";
           var fdark = fm === "dark" || (fm !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
           document.documentElement.classList.toggle("dark", fdark);
+          document.documentElement.classList.toggle("folio-manual", manual);
           document.documentElement.style.colorScheme = fdark ? "dark" : "light";
         } else if (light[id]) {
           document.documentElement.classList.remove("dark");

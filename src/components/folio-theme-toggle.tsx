@@ -2,16 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 const KEY = "shiki-folio-mode";
 
-function effectiveDark(stored: string | null): boolean {
-  if (stored === "dark") return true;
-  if (stored === "light") return false;
-  return (
-    typeof window !== "undefined" &&
-    !!window.matchMedia?.("(prefers-color-scheme: dark)").matches
-  );
-}
-
-function readStored(): string | null {
+function readStored(): "dark" | "light" | null {
   try {
     const v = localStorage.getItem(KEY);
     return v === "dark" || v === "light" ? v : null;
@@ -20,34 +11,45 @@ function readStored(): string | null {
   }
 }
 
+function osDark(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    !!window.matchMedia?.("(prefers-color-scheme: dark)").matches
+  );
+}
+
+function applyMode(stored: "dark" | "light" | null) {
+  const dark = stored === "dark" || (stored === null && osDark());
+  const root = document.documentElement;
+  root.classList.toggle("dark", dark);
+  root.classList.toggle("folio-manual", stored !== null);
+  root.style.colorScheme = dark ? "dark" : "light";
+  return dark;
+}
+
 /** Manual LIGHT/DARK switch mirroring the portfolio header button. */
 export function FolioThemeToggle() {
-  const [stored, setStored] = useState<string | null>(null);
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState<boolean>(() =>
+    typeof window === "undefined"
+      ? false
+      : readStored() === "dark" ||
+        (readStored() === null && osDark()),
+  );
 
   useEffect(() => {
-    const s = readStored();
-    setStored(s);
-    const d = effectiveDark(s);
-    setDark(d);
-    document.documentElement.classList.toggle("dark", d);
-    document.documentElement.style.colorScheme = d ? "dark" : "light";
+    setDark(applyMode(readStored()));
   }, []);
 
   const toggle = useCallback(() => {
-    const next = dark ? "light" : "dark";
+    const next: "dark" | "light" = dark ? "light" : "dark";
     try {
       localStorage.setItem(KEY, next);
     } catch {
       /* private mode — non-fatal */
     }
-    setStored(next);
-    setDark(next === "dark");
-    document.documentElement.classList.toggle("dark", next === "dark");
-    document.documentElement.style.colorScheme = next === "dark" ? "dark" : "light";
+    setDark(applyMode(next));
   }, [dark]);
 
-  void stored;
   return (
     <button
       type="button"

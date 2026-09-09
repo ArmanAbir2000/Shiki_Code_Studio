@@ -432,6 +432,33 @@ export function readStoredTheme(): ThemeId | null {
   }
 }
 
+const FOLIO_MODE_KEY = "shiki-folio-mode";
+
+/** Folio has its own LIGHT/DARK button (like the portfolio). An explicit
+ *  choice wins; with no choice the OS preference decides. */
+function folioDark(): boolean {
+  try {
+    const s = localStorage.getItem(FOLIO_MODE_KEY);
+    if (s === "dark") return true;
+    if (s === "light") return false;
+  } catch {
+    /* private mode — fall through to OS */
+  }
+  return (
+    typeof window !== "undefined" &&
+    !!window.matchMedia?.("(prefers-color-scheme: dark)").matches
+  );
+}
+
+function folioManual(): boolean {
+  try {
+    const s = localStorage.getItem(FOLIO_MODE_KEY);
+    return s === "dark" || s === "light";
+  } catch {
+    return false;
+  }
+}
+
 /** Apply a theme to the document: data-theme attr, .dark class, chrome color. */
 export function applyTheme(id: ThemeId) {
   const def = byId.get(id);
@@ -441,8 +468,17 @@ export function applyTheme(id: ThemeId) {
     const root = document.documentElement;
     root.dataset.theme = def.id;
     root.dataset.layout = def.layout;
-    root.classList.toggle("dark", def.mode === "dark");
-    root.style.colorScheme = def.mode;
+    // Folio manages its own light/dark (header toggle); every other theme
+    // follows its fixed mode. The .folio-manual flag keeps the OS-driven
+    // media query off once the visitor has made an explicit choice.
+    const dark = def.id === "folio" ? folioDark() : def.mode === "dark";
+    root.classList.toggle("dark", dark);
+    if (def.id === "folio") {
+      root.classList.toggle("folio-manual", folioManual());
+    } else {
+      root.classList.remove("folio-manual");
+    }
+    root.style.colorScheme = dark ? "dark" : "light";
 
     let meta = document.querySelector<HTMLMetaElement>(
       'meta[name="theme-color"]',

@@ -1764,9 +1764,10 @@ html[data-theme="folio"] {
   --pulse-speed: 2s;
 }
 
-/* Auto-dark follows the portfolio's own dark paper when the OS asks for it. */
+/* Auto-dark follows the portfolio's own dark paper when the OS asks for it —
+   skipped once the visitor makes an explicit choice (.folio-manual). */
 @media (prefers-color-scheme: dark) {
-  html[data-theme="folio"] {
+  html[data-theme="folio"]:not(.folio-manual) {
     color-scheme: dark;
     --background: #14150f;
     --foreground: #efebdf;
@@ -1887,7 +1888,7 @@ html[data-theme="folio"] body::before {
   animation: theme-aurora-drift 1.1s steps(6) infinite;
 }
 @media (prefers-color-scheme: dark) {
-  html[data-theme="folio"] body::before {
+  html[data-theme="folio"]:not(.folio-manual) body::before {
     opacity: 0.05;
     mix-blend-mode: screen;
   }
