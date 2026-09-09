@@ -3209,6 +3209,27 @@ a .fl-outline:hover {
   background: var(--foreground);
   color: var(--background);
 }
+/* Clears the fixed site header, which the case page otherwise renders
+   straight over the top of the project title. */
+.fl-cs-page {
+  padding-top: 57px;
+}
+@media (max-width: 820px) {
+  /* One bar on a phone rather than two stacked ones: the case bar takes
+     over as the header and carries the close action back to the archive. */
+  .fl-cs-page > .fl-hdr {
+    display: none;
+  }
+  .fl-cs-page .fl-cs-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    min-height: 56px;
+    padding-block: 0;
+  }
+}
 .fl-cs-hero {
   padding-top: clamp(1.6rem, 5vh, 3.5rem);
 }
@@ -3875,11 +3896,19 @@ html[data-theme="folio"] [data-slot="card"] {
 /* Narrow-screen page index — the inline nav is hidden below 820px. */
 .fl-burger {
   display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  min-height: 34px;
   border: 1px solid var(--foreground);
   background: transparent;
   color: var(--foreground);
-  padding: 9px 12px;
+  padding: 0;
   cursor: pointer;
+}
+.fl-burger:hover {
+  color: var(--primary);
+  border-color: var(--primary);
 }
 .fl-hdr-r {
   display: flex;

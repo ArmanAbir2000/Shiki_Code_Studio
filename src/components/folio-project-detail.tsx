@@ -88,7 +88,7 @@ export function FolioProjectDetail({
   ];
 
   return (
-    <div className="fl-root">
+    <div className="fl-root fl-cs-page">
       <FolioHeader />
 
       <div className="fl-cs-top">

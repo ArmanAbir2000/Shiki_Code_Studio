@@ -4,7 +4,7 @@ import { FolioFx } from "@/components/folio-fx";
 import { FolioThemeToggle } from "@/components/folio-theme-toggle";
 
 const PAGES: [string, string, string][] = [
-  ["01", "/", "INDEX"],
+  ["01", "/", "HOME"],
   ["02", "/projects", "WORK"],
   ["03", "/blog", "WRITING"],
   ["04", "/book", "BOOK A CALL"],
@@ -77,12 +77,19 @@ export function FolioHeader({ homeHref }: { homeHref?: string } = {}) {
           <FolioThemeToggle />
           <button
             type="button"
-            className="fl-burger fl-mono"
+            className="fl-burger"
             aria-expanded={open}
             aria-label="Open page index"
             onClick={() => setOpen(true)}
           >
-            INDEX
+            <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true">
+              <path
+                d="M0 1h18M0 6h18M0 11h11"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="none"
+              />
+            </svg>
           </button>
         </span>
       </header>
