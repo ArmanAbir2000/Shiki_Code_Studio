@@ -55,17 +55,63 @@ class ToolbarErrorBoundary extends React.Component<
   }
 }
 
+// GitHub Pages serves hashed chunks that are replaced on every deploy.
+// A visitor with an older entry chunk cached will request a hashed file
+// that no longer exists ("error loading dynamically imported module").
+// Detect that once per tab and reload to fetch the fresh index.html.
+const CHUNK_ERROR_KEY = "shiki-chunk-reload";
+function isChunkError(message: string): boolean {
+  return /dynamically imported module|loading chunk|chunkloaderror|importing a module script failed/i.test(
+    message,
+  );
+}
+if (typeof window !== "undefined") {
+  const reloadOnce = () => {
+    try {
+      if (sessionStorage.getItem(CHUNK_ERROR_KEY)) return;
+      sessionStorage.setItem(CHUNK_ERROR_KEY, "1");
+    } catch {
+      /* private mode — reload anyway */
+    }
+    window.location.reload();
+  };
+  window.addEventListener(
+    "error",
+    (e) => {
+      const msg =
+        (typeof e.message === "string" && e.message) ||
+        (e.error instanceof Error ? e.error.message : "");
+      if (msg && isChunkError(msg)) reloadOnce();
+    },
+    true,
+  );
+  window.addEventListener("unhandledrejection", (e) => {
+    const reason = e.reason as unknown;
+    const msg =
+      reason instanceof Error
+        ? reason.message
+        : typeof reason === "string"
+          ? reason
+          : "";
+    if (msg && isChunkError(msg)) {
+      e.preventDefault();
+      reloadOnce();
+    }
+  });
+}
+
 /** Hard guard so runtime errors never leave the preview as a blank page. */
 class RootErrorBoundary extends React.Component<
   { children: React.ReactNode },
-  { hasError: boolean; message: string; stack: string }
+  { hasError: boolean; message: string; stack: string; chunk: boolean }
 > {
-  state = { hasError: false, message: "", stack: "" };
+  state = { hasError: false, message: "", stack: "", chunk: false };
   static getDerivedStateFromError(error: Error) {
     return {
       hasError: true,
       message: error.message || "Unknown runtime error",
       stack: error.stack || "",
+      chunk: isChunkError(error.message || ""),
     };
   }
   componentDidCatch(err: Error) {
@@ -73,6 +119,28 @@ class RootErrorBoundary extends React.Component<
   }
   render() {
     if (this.state.hasError) {
+      if (this.state.chunk) {
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
+            <div className="max-w-md text-center">
+              <p className="text-sm font-semibold">
+                A new version was just published
+              </p>
+              <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                The page tried to load a file from the previous release.
+                Reload to fetch the latest version.
+              </p>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="mt-5 inline-flex cursor-pointer items-center rounded-md border border-border px-4 py-2 text-xs font-medium"
+              >
+                Reload now
+              </button>
+            </div>
+          </div>
+        );
+      }
       return (
         <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
           <div className="max-w-lg text-center">
