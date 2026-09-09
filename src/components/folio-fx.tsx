@@ -59,24 +59,44 @@ export function FolioFx() {
       document.body.classList.add("fl-loaded");
     }
 
-    /* ---- scroll reveals ---- */
-    const rv = Array.from(document.querySelectorAll(".fl-rv"));
+    /* ---- scroll reveals (also catches nodes added later, e.g. Convex data) ---- */
+    const rvSeen = new WeakSet<Element>();
+    let io: IntersectionObserver | null = null;
+    const revealOn = (el: Element) => {
+      if (rvSeen.has(el)) return;
+      rvSeen.add(el);
+      if (!io) el.classList.add("on");
+      else io.observe(el);
+    };
     if (!("IntersectionObserver" in window)) {
-      rv.forEach((el) => el.classList.add("on"));
+      Array.from(document.querySelectorAll(".fl-rv")).forEach(revealOn);
     } else {
-      const io = new IntersectionObserver(
+      io = new IntersectionObserver(
         (entries) => {
           entries.forEach((en) => {
             if (en.isIntersecting) {
               en.target.classList.add("on");
-              io.unobserve(en.target);
+              io?.unobserve(en.target);
             }
           });
         },
         { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
       );
-      rv.forEach((el) => io.observe(el));
-      cleanups.push(() => io.disconnect());
+      Array.from(document.querySelectorAll(".fl-rv")).forEach(revealOn);
+      const mo = new MutationObserver((mutations) => {
+        mutations.forEach((m) => {
+          m.addedNodes.forEach((node) => {
+            if (!(node instanceof Element)) return;
+            if (node.classList.contains("fl-rv")) revealOn(node);
+            node.querySelectorAll?.(".fl-rv").forEach(revealOn);
+          });
+        });
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+      cleanups.push(() => {
+        mo.disconnect();
+        io?.disconnect();
+      });
     }
 
     /* ---- progress bar + scrolled flag + rail spy ---- */
@@ -122,29 +142,32 @@ export function FolioFx() {
     cleanups.push(() => window.removeEventListener("scroll", onScroll));
     update();
 
-    /* ---- sibling dimming on spreads (desktop only) ---- */
+    /* ---- sibling dimming on spreads (desktop only, delegated for async lists) ---- */
     if (fine && !reduced) {
-      const spreads = Array.from(document.querySelectorAll(".fl-spread"));
-      const enter = (el: Element) => () => {
-        spreads.forEach((o) => {
-          if (o !== el) o.classList.add("dim");
-        });
+      const onOver = (e: MouseEvent) => {
+        const el = (e.target as Element).closest?.(".fl-spread");
+        if (!el) return;
+        el.parentElement
+          ?.querySelectorAll(".fl-spread")
+          .forEach((o) => {
+            if (o !== el) o.classList.add("dim");
+          });
       };
-      const leave = () => {
-        spreads.forEach((o) => o.classList.remove("dim"));
+      const onOut = (e: MouseEvent) => {
+        const el = (e.target as Element).closest?.(".fl-spread");
+        if (!el) return;
+        const to = (e.relatedTarget as Element | null)?.closest?.(".fl-spread");
+        if (to === el) return;
+        el.parentElement
+          ?.querySelectorAll(".fl-spread")
+          .forEach((o) => o.classList.remove("dim"));
       };
-      const pairs = spreads.map((el) => {
-        const e = enter(el);
-        el.addEventListener("mouseenter", e);
-        el.addEventListener("mouseleave", leave);
-        return { el, e };
+      document.addEventListener("mouseover", onOver);
+      document.addEventListener("mouseout", onOut);
+      cleanups.push(() => {
+        document.removeEventListener("mouseover", onOver);
+        document.removeEventListener("mouseout", onOut);
       });
-      cleanups.push(() =>
-        pairs.forEach(({ el, e }) => {
-          el.removeEventListener("mouseenter", e);
-          el.removeEventListener("mouseleave", leave);
-        }),
-      );
     }
 
     /* ---- custom cursor (fine pointer, no reduced motion) ---- */

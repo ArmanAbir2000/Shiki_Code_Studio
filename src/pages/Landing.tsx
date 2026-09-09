@@ -227,6 +227,7 @@ export default function Landing() {
           cover: p.cover,
           shots: p.shots ?? [],
         }))}
+        loadingProjects={projects === undefined}
         github={githubCache as never}
       />
     );

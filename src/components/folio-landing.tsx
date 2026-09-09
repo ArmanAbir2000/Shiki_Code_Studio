@@ -47,6 +47,7 @@ type Props = {
   pricing: PricingContent;
   socials: SocialsContent;
   projects: FolioProject[];
+  loadingProjects?: boolean;
   github: FolioGithub;
 };
 
@@ -98,6 +99,7 @@ export function FolioLanding({
   pricing,
   socials,
   projects,
+  loadingProjects,
   github,
 }: Props) {
   const spreads = (projects.length > 0 ? projects : []).slice(0, 2);
@@ -240,7 +242,14 @@ export function FolioLanding({
             </p>
           </div>
           <div className="fl-wrap">
-            {spreads.map((p, i) => (
+            {loadingProjects ? (
+              <p className="fl-mono fl-flat-note">LOADING WORK…</p>
+            ) : spreads.length === 0 ? (
+              <p className="fl-mono fl-flat-note">
+                NO PROJECTS PUBLISHED YET — CHECK BACK SOON.
+              </p>
+            ) : (
+              spreads.map((p, i) => (
               <article
                 key={p.slug + i}
                 className={"fl-spread " + VARIANTS[i % VARIANTS.length]}
@@ -270,7 +279,8 @@ export function FolioLanding({
                   </Link>
                 </div>
               </article>
-            ))}
+            ))
+            )}
             {totalCount > spreads.length && (
               <div className="fl-more">
                 <Link className="fl-open" to="/projects">
