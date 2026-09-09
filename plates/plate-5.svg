@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#E9E5D8"/>
+  <g>
+    <rect x="60" y="60" width="90" height="90" fill="#17150F"/>
+    <rect x="170" y="60" width="90" height="90" fill="#17150F" opacity=".7"/>
+    <rect x="280" y="60" width="90" height="90" fill="#17150F" opacity=".4"/>
+    <rect x="390" y="60" width="90" height="90" fill="#E23A21"/>
+    <rect x="500" y="60" width="90" height="90" fill="none" stroke="#17150F" stroke-width="3"/>
+  </g>
+  <text x="60" y="300" font-family="Arial Black,Arial" font-size="96" font-weight="900" fill="#17150F">GRID</text>
+  <text x="60" y="390" font-family="Arial" font-size="20" letter-spacing="4" fill="#6B6557">PLATE 05 — 12 COL SPREAD</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#17150F"/>
+  <g fill="#E9E5D8">
+    <rect x="60" y="70" width="200" height="26"/>
+    <rect x="60" y="120" width="340" height="26"/>
+    <rect x="60" y="170" width="120" height="26"/>
+  </g>
+  <text x="52" y="380" font-family="Arial Black,Arial" font-size="150" font-weight="900" fill="none" stroke="#E9E5D8" stroke-width="2">Aa</text>
+  <rect x="620" y="300" width="90" height="90" fill="#E23A21"/>
+  <text x="60" y="420" font-family="Arial" font-size="20" letter-spacing="4" fill="#9E9787">PLATE 03 — TYPE SPECIMEN</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#E9E5D8"/>
+  <g stroke="#17150F" stroke-opacity=".3">
+    <path d="M0 0h800M0 75h800M0 150h800M0 225h800M0 300h800M0 375h800"/>
+  </g>
+  <rect x="0" y="216" width="800" height="18" fill="#E23A21"/>
+  <text x="48" y="150" font-family="Georgia,serif" font-style="italic" font-size="110" fill="#17150F">The record.</text>
+  <text x="48" y="390" font-family="Arial" font-size="20" letter-spacing="4" fill="#6B6557">PLATE 06 — CONTRIBUTION INDEX</text>
+</svg>
