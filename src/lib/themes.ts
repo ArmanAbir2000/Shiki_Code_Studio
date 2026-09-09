@@ -399,7 +399,9 @@ export const THEMES: ThemeDef[] = [
   },
 ];
 
-export const DEFAULT_THEME: ThemeId = "studio";
+/** Keep in sync with the pre-paint script in index.html, which picks the
+ *  same fallback before React boots. */
+export const DEFAULT_THEME: ThemeId = "folio";
 
 const byId = new Map<string, ThemeDef>(THEMES.map((t) => [t.id, t]));
 
