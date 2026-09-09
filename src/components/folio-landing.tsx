@@ -1,9 +1,10 @@
 import type { CSSProperties } from "react";
 import { Link } from "react-router";
 import { FolioGithub } from "@/components/folio-github";
-import { FolioThemeToggle } from "@/components/folio-theme-toggle";
+import { FolioHeader } from "@/components/folio-shell";
 import { FolioFx } from "@/components/folio-fx";
 import { Marquee } from "@/components/motion-primitives";
+import { authorPlate, plateFor, shotsFor } from "@/lib/plates";
 import type {
   AboutContent,
   Capability,
@@ -53,20 +54,13 @@ type Props = {
 
 const VARIANTS = ["fl-a", "fl-b", "fl-c"] as const;
 
-/** Sample plates shown until the owner uploads real covers. */
-export function folioPlate(index: number): string {
-  const base = import.meta.env.VITE_BASE_PATH || "/";
-  const prefix = base.endsWith("/") ? base : base + "/";
-  return prefix + "plates/plate-" + ((index % 6) + 1) + ".svg";
-}
-
 function SpreadMedia({ p, index }: { p: FolioProject; index: number }) {
-  const second = p.shots?.[0];
+  const second = p.shots?.[0] ?? shotsFor(p, 1, index)[0];
   return (
     <figure className="fl-media fl-rv" style={{ "--d": ".1s" } as CSSProperties}>
       <div className="fl-plate">
         <img
-          src={p.cover || folioPlate(index)}
+          src={p.cover || plateFor(p, index)}
           alt={p.cover ? "" : p.title + " — sample plate"}
           loading="lazy"
           decoding="async"
@@ -76,15 +70,9 @@ function SpreadMedia({ p, index }: { p: FolioProject; index: number }) {
         <span>PLATE — {p.title.toUpperCase()}</span>
         <span>{p.year ?? ""}</span>
       </figcaption>
-      {second ? (
-        <div className="fl-plate fl-crop">
-          <img src={second} alt="" loading="lazy" decoding="async" />
-        </div>
-      ) : (
-        <div className="fl-plate fl-crop fl-crop-fb" aria-hidden="true">
-          <span>{(p.stack ?? p.tags).slice(0, 2).join(" · ").toUpperCase()}</span>
-        </div>
-      )}
+      <div className="fl-plate fl-crop">
+        <img src={second} alt="" loading="lazy" decoding="async" />
+      </div>
     </figure>
   );
 }
@@ -110,23 +98,7 @@ export function FolioLanding({
 
   return (
     <div className="fl-root">
-      <header className="fl-hdr">
-        <span className="fl-mono">
-          <a href="#fl-top">ARMAN ABIR — FLUTTER DEVELOPER</a>
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <nav className="fl-nav fl-mono" aria-label="Site">
-            <Link to="/projects">Work</Link>
-            <Link to="/blog">Writing</Link>
-            <Link to="/book">Book</Link>
-            <Link to="/contact">Contact</Link>
-          </nav>
-          <Link className="fl-cta" to="/book">
-            Book a call ↗
-          </Link>
-          <FolioThemeToggle />
-        </span>
-      </header>
+      <FolioHeader homeHref="#fl-top" />
 
       <nav className="fl-rail" aria-label="Section index">
         <a href="#fl-work">02 WORK</a>
@@ -309,7 +281,7 @@ export function FolioLanding({
               <figure>
                 <div className="fl-plate">
                   <img
-                    src={about.photoUrl || folioPlate(1)}
+                    src={about.photoUrl || authorPlate()}
                     alt={
                       about.photoUrl ? "Arman Abir" : "Author — sample plate"
                     }

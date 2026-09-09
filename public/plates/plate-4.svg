@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
-  <rect width="800" height="450" fill="#E9E5D8"/>
-  <path d="M0 450 800 0" stroke="#E23A21" stroke-width="10"/>
-  <path d="M0 450 800 60" stroke="#17150F" stroke-opacity=".25" stroke-width="2"/>
-  <path d="M0 390 800 -60" stroke="#17150F" stroke-opacity=".25" stroke-width="2"/>
-  <text x="48" y="140" font-family="Arial Black,Arial" font-size="110" font-weight="900" fill="#17150F">BUILD.</text>
-  <text x="48" y="400" font-family="Arial" font-size="20" letter-spacing="4" fill="#6B6557">PLATE 04 — BREAK / BUILD</text>
-</svg>

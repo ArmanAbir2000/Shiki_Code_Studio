@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useMutation } from "convex/react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, TriangleAlert } from "lucide-react";
@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { FolioShell } from "@/components/folio-shell";
 import { useSiteTheme } from "@/hooks/use-site-theme";
 import { MaskText } from "@/components/motion-primitives";
 import { EASE } from "@/lib/motion";
@@ -100,9 +100,115 @@ export default function Contact() {
     setSending(false);
   };
 
+  const fields = (
+    <>
+      <div className="fl-form-row">
+        <div className="fl-field">
+          <Label htmlFor="contact-name">Name</Label>
+          <Input
+            id="contact-name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Jane Doe"
+            required
+            maxLength={100}
+          />
+        </div>
+        <div className="fl-field">
+          <Label htmlFor="contact-email">Email</Label>
+          <Input
+            id="contact-email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="jane@company.com"
+            required
+            maxLength={200}
+          />
+        </div>
+      </div>
+      <div className="fl-field">
+        <Label htmlFor="contact-subject">Subject</Label>
+        <Input
+          id="contact-subject"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          placeholder="New build inquiry"
+          maxLength={150}
+        />
+      </div>
+      <div className="fl-field">
+        <Label htmlFor="contact-body">Message</Label>
+        <Textarea
+          id="contact-body"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          rows={7}
+          maxLength={3000}
+          placeholder="Tell me a little about what you need."
+          required
+        />
+      </div>
+    </>
+  );
+
+  if (folio) {
+    return (
+      <FolioShell>
+        <div className="fl-wrap fl-sec-head">
+          <span className="fl-mono">06 — CONTACT</span>
+          <span className="fl-mono">OPEN CORRESPONDENCE</span>
+        </div>
+        <div className="fl-wrap fl-page-head">
+          <h1 className="fl-rv">
+            SEND A
+            <br />
+            MESSAGE
+          </h1>
+          <p className="fl-page-lede fl-rv" style={{ "--d": ".08s" } as CSSProperties}>
+            Not ready to book a slot? Send a <em>short note</em> instead —
+            questions about a project, availability, or rates are all welcome.
+          </p>
+        </div>
+        <div className="fl-wrap fl-form-wrap">
+          <form onSubmit={handleSubmit} className="fl-form">
+            <p className="fl-mono fl-form-legend">01 — YOUR DETAILS</p>
+            {fields}
+            <button type="submit" className="fl-submit fl-mono" disabled={sending}>
+              {sending ? "SENDING…" : "SEND MESSAGE →"}
+            </button>
+            <div aria-live="polite">
+              {status && (
+                <p
+                  className={
+                    "fl-status fl-mono" + (status.ok ? " fl-ok" : " fl-bad")
+                  }
+                >
+                  {status.text}
+                </p>
+              )}
+            </div>
+          </form>
+          <aside className="fl-form-aside fl-mono">
+            <small>PREFER TO TALK LIVE?</small>
+            <Link className="fl-open" to="/book">
+              BOOK AN APPOINTMENT →
+            </Link>
+            <small>RESPONSE TIME</small>
+            <div>WITHIN ONE BUSINESS DAY</div>
+            <small>BASED IN</small>
+            <div>DHAKA, BANGLADESH</div>
+            <small>WORKING ON</small>
+            <div>FLUTTER · DART · LARAVEL</div>
+          </aside>
+        </div>
+      </FolioShell>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {folio ? <FolioHeader /> : <SiteHeader />}
+      <SiteHeader />
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-6 pt-16 pb-24 sm:pt-24">
@@ -149,53 +255,7 @@ export default function Contact() {
             onSubmit={handleSubmit}
             className="mt-12 max-w-xl space-y-6"
           >
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div className="grid gap-2">
-                <Label htmlFor="contact-name">Name</Label>
-                <Input
-                  id="contact-name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Jane Doe"
-                  required
-                  maxLength={100}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="contact-email">Email</Label>
-                <Input
-                  id="contact-email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="jane@company.com"
-                  required
-                  maxLength={200}
-                />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="contact-subject">Subject</Label>
-              <Input
-                id="contact-subject"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                placeholder="New build inquiry"
-                maxLength={150}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="contact-body">Message</Label>
-              <Textarea
-                id="contact-body"
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                rows={7}
-                maxLength={3000}
-                placeholder="Tell me a little about what you need."
-                required
-              />
-            </div>
+            {fields}
             <Button
               type="submit"
               size="lg"
@@ -233,7 +293,7 @@ export default function Contact() {
         </div>
       </main>
 
-      {folio ? <FolioFooter /> : <SiteFooter />}
+      <SiteFooter />
     </div>
   );
 }

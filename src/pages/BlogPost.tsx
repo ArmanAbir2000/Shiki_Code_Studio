@@ -6,7 +6,7 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { FolioShell } from "@/components/folio-shell";
 import { useSiteTheme } from "@/hooks/use-site-theme";
 import { MaskText } from "@/components/motion-primitives";
 import { EASE } from "@/lib/motion";
@@ -17,6 +17,27 @@ const formatDate = (iso: string) =>
     year: "numeric",
     month: "long",
     day: "numeric",
+  });
+
+type Post = {
+  slug: string;
+  title: string;
+  excerpt?: string;
+  publishedAt: string;
+  tags: string[];
+};
+
+const articleJsonLd = (post: Post) =>
+  JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt || undefined,
+    datePublished: post.publishedAt,
+    url: `${SITE_URL}/blog/${post.slug}`,
+    keywords: post.tags.join(", ") || undefined,
+    author: { "@type": "Person", name: "Arman Abir", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "Shiki Code Studio" },
   });
 
 function NotFound() {
@@ -47,11 +68,73 @@ export default function BlogPost() {
     description: post?.excerpt || undefined,
   });
   const { theme } = useSiteTheme();
-  const folio = theme === "folio";
+
+  if (theme === "folio") {
+    return (
+      <FolioShell>
+        {post === undefined ? (
+          <p className="fl-wrap fl-mono fl-flat-note">LOADING ENTRY…</p>
+        ) : !post ? (
+          <div className="fl-wrap fl-404">
+            <p className="fl-mono">404 — MISSING ENTRY</p>
+            <h1 className="fl-404-title">POST NOT FOUND.</h1>
+            <Link className="fl-open" to="/blog">
+              ALL WRITING →
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className="fl-wrap fl-sec-head">
+              <span className="fl-mono">03 — WRITING</span>
+              <span className="fl-mono">
+                {formatDate(post.publishedAt).toUpperCase()}
+              </span>
+            </div>
+            <article className="fl-wrap fl-read">
+              <Link className="fl-back fl-mono" to="/blog">
+                ← ALL WRITING
+              </Link>
+              <h1 className="fl-read-title fl-rv">{post.title}</h1>
+              {post.tags.length > 0 && (
+                <p className="fl-read-tags fl-mono fl-rv">
+                  {post.tags.join(" · ").toUpperCase()}
+                </p>
+              )}
+              {post.excerpt && (
+                <p className="fl-read-lede fl-rv">{post.excerpt}</p>
+              )}
+              <div className="fl-read-body">
+                {post.body.split(/\n{2,}/).map((para, i) => (
+                  <p key={i}>{para.trim()}</p>
+                ))}
+              </div>
+              <div className="fl-read-cta">
+                <p className="fl-mono">BUILDING SOMETHING LIKE THIS?</p>
+                <p>
+                  I help teams ship Flutter apps end to end — happy to talk
+                  through your project.
+                </p>
+                <Link className="fl-open" to="/book">
+                  BOOK AN APPOINTMENT →
+                </Link>
+              </div>
+              <p className="fl-cs-end fl-mono">
+                END OF ENTRY — {post.title.toUpperCase()}
+              </p>
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: articleJsonLd(post) }}
+              />
+            </article>
+          </>
+        )}
+      </FolioShell>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {folio ? <FolioHeader /> : <SiteHeader />}
+      <SiteHeader />
 
       {post === undefined ? (
         <main className="flex flex-1 items-center justify-center">
@@ -125,32 +208,13 @@ export default function BlogPost() {
             {/* JSON-LD for the article — helps Google rich results */}
             <script
               type="application/ld+json"
-              dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                  "@context": "https://schema.org",
-                  "@type": "BlogPosting",
-                  headline: post.title,
-                  description: post.excerpt || undefined,
-                  datePublished: post.publishedAt,
-                  url: `${SITE_URL}/blog/${post.slug}`,
-                  keywords: post.tags.join(", ") || undefined,
-                  author: {
-                    "@type": "Person",
-                    name: "Arman Abir",
-                    url: SITE_URL,
-                  },
-                  publisher: {
-                    "@type": "Organization",
-                    name: "Shiki Code Studio",
-                  },
-                }),
-              }}
+              dangerouslySetInnerHTML={{ __html: articleJsonLd(post) }}
             />
           </article>
         </main>
       )}
 
-      {folio ? <FolioFooter /> : <SiteFooter />}
+      <SiteFooter />
     </div>
   );
 }

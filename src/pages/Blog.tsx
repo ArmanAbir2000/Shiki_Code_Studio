@@ -1,10 +1,11 @@
+import type { CSSProperties } from "react";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Loader2 } from "lucide-react";
 import { Link } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { FolioShell } from "@/components/folio-shell";
 import { useSiteTheme } from "@/hooks/use-site-theme";
 import { EASE } from "@/lib/motion";
 import { useDocumentMeta } from "@/lib/seo";
@@ -25,11 +26,71 @@ export default function Blog() {
 
   const posts = useQuery(api.siteContent.listPosts, {});
   const { theme } = useSiteTheme();
-  const folio = theme === "folio";
+
+  if (theme === "folio") {
+    return (
+      <FolioShell>
+        <div className="fl-wrap fl-sec-head">
+          <span className="fl-mono">03 — WRITING</span>
+          <span className="fl-mono">
+            {posts === undefined
+              ? "LOADING"
+              : String(posts.length).padStart(2, "0") +
+                " ENTR" +
+                (posts.length === 1 ? "Y" : "IES")}
+          </span>
+        </div>
+        <div className="fl-wrap fl-page-head">
+          <h1 className="fl-rv">
+            FIELD
+            <br />
+            NOTES
+          </h1>
+          <p className="fl-page-lede fl-rv" style={{ "--d": ".08s" } as CSSProperties}>
+            Notes on <em>Flutter architecture</em>, Laravel backends, and what
+            shipping real products actually teaches you.
+          </p>
+        </div>
+        <div className="fl-wrap">
+          {posts === undefined ? (
+            <p className="fl-mono fl-flat-note">LOADING ENTRIES…</p>
+          ) : posts.length === 0 ? (
+            <p className="fl-mono fl-flat-note">
+              NOTHING PUBLISHED YET — CHECK BACK SOON.
+            </p>
+          ) : (
+            <div className="fl-entries">
+              {posts.map((post, i) => (
+                <article key={post._id} className="fl-entry fl-rv">
+                  <span className="fl-entry-n fl-mono">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="fl-entry-main">
+                    <Link to={"/blog/" + post.slug} data-cursor="READ">
+                      {post.title}
+                    </Link>
+                    {post.excerpt && <p>{post.excerpt}</p>}
+                    {post.tags.length > 0 && (
+                      <p className="fl-entry-tags fl-mono">
+                        {post.tags.join(" · ").toUpperCase()}
+                      </p>
+                    )}
+                  </div>
+                  <span className="fl-entry-date fl-mono">
+                    {formatDate(post.publishedAt).toUpperCase()}
+                  </span>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </FolioShell>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {folio ? <FolioHeader /> : <SiteHeader />}
+      <SiteHeader />
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-3xl px-6 pt-16 pb-24 sm:pt-24">
@@ -108,7 +169,7 @@ export default function Blog() {
         </div>
       </main>
 
-      {folio ? <FolioFooter /> : <SiteFooter />}
+      <SiteFooter />
     </div>
   );
 }

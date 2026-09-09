@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import { folioPlate } from "@/components/folio-landing";
+import { plateFor, shotsFor } from "@/lib/plates";
 import { FolioFx } from "@/components/folio-fx";
-import { FolioThemeToggle } from "@/components/folio-theme-toggle";
+import { FolioHeader } from "@/components/folio-shell";
 import { ProjectVideo } from "@/components/project-video";
 import { StoreBadges } from "@/components/store-badges";
 
@@ -26,11 +26,10 @@ export type FolioDetailProject = {
 };
 
 function Bleed({ p }: { p: FolioDetailProject }) {
-  const sample = folioPlate(p.slug.length);
   return (
     <div className="fl-plate fl-cs-bleed-plate">
       <img
-        src={p.cover || sample}
+        src={p.cover || plateFor(p)}
         alt={
           p.cover ? p.title + " — case spread" : p.title + " — sample plate"
         }
@@ -80,7 +79,8 @@ export function FolioProjectDetail({
   const context = paras.slice(0, 2);
   const approach = paras.slice(2, 4);
   const detail = paras.slice(4);
-  const shots = (p.shots ?? []).slice(0, 4);
+  const uploaded = (p.shots ?? []).slice(0, 4);
+  const shots = uploaded.length > 0 ? uploaded : shotsFor(p, 3);
   const stats: [string, string][] = [
     [String(p.year), "YEAR"],
     [String((p.stack ?? []).length).padStart(2, "0"), "STACK ITEMS"],
@@ -89,17 +89,7 @@ export function FolioProjectDetail({
 
   return (
     <div className="fl-root">
-      <header className="fl-hdr">
-        <span className="fl-mono">
-          <Link to="/">ARMAN ABIR — FLUTTER DEVELOPER</Link>
-        </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span className="fl-hdr-r fl-mono">
-            <Link to="/projects">ALL WORK</Link>
-          </span>
-          <FolioThemeToggle />
-        </span>
-      </header>
+      <FolioHeader />
 
       <div className="fl-cs-top">
         <span className="fl-mono">CASE — {p.title.toUpperCase()}</span>
@@ -179,35 +169,36 @@ export function FolioProjectDetail({
               <ProjectVideo url={p.videoUrl} title={p.title} />
             </div>
           )}
-          {shots.length > 0 ? (
-            <div className="fl-cs-plates">
-              {shots.map((url, i) => (
-                <figure key={url + i}>
-                  <div className="fl-plate">
-                    <img
-                      src={url}
-                      alt={p.title + " screenshot " + (i + 1)}
-                      loading="lazy"
-                    />
-                  </div>
-                  <figcaption className="fl-cap">
-                    <span>SHOT {String(i + 1).padStart(2, "0")}</span>
-                    <span>{p.year}</span>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
-          ) : (
-            <div className="fl-cs-plates">
-              {(p.highlights ?? []).slice(0, 2).map((h, i) => (
-                <figure key={i}>
-                  <div className="fl-plate fl-cs-hl">
-                    <span className="fl-plate-fb-num">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <p>{h}</p>
-                  </div>
-                </figure>
+          <div className="fl-cs-plates">
+            {shots.map((url, i) => (
+              <figure key={url + i}>
+                <div className="fl-plate">
+                  <img
+                    src={url}
+                    alt={
+                      uploaded.length > 0
+                        ? p.title + " screenshot " + (i + 1)
+                        : p.title + " — sample plate " + (i + 1)
+                    }
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption className="fl-cap">
+                  <span>SHOT {String(i + 1).padStart(2, "0")}</span>
+                  <span>{p.year}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          {(p.highlights ?? []).length > 0 && (
+            <div className="fl-cs-hls">
+              {(p.highlights ?? []).map((h, i) => (
+                <div key={i} className="fl-cs-hl">
+                  <span className="fl-mono">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p>{h}</p>
+                </div>
               ))}
             </div>
           )}

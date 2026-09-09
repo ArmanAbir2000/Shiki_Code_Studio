@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 export type FolioGhDay = { date: string; count: number };
 
@@ -115,6 +115,14 @@ export function FolioGithub({ cache }: { cache: FolioGhCache }) {
     : (cache?.contributedTo ?? [])
   ).slice(0, 5);
 
+  // The calendar is 53 weeks wide and only the last few fit on a phone, so
+  // open it on the most recent weeks rather than a year ago.
+  const scroller = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = scroller.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [model]);
+
   return (
     <div>
       <p className="fl-gh-lede">
@@ -129,7 +137,10 @@ export function FolioGithub({ cache }: { cache: FolioGhCache }) {
           </div>
         ))}
       </div>
-      <div className="fl-gh-scroll">
+      <p className="fl-gh-hint fl-mono" aria-hidden="true">
+        DRAG TO SCAN THE FULL YEAR ←
+      </p>
+      <div className="fl-gh-scroll" ref={scroller}>
         <div className="fl-gh-map" role="img" aria-label={"GitHub contribution calendar — " + total + " contributions, longest streak " + model.longest + " days"}>
           <div className="fl-gh-days" aria-hidden="true">
             <span>MON</span>

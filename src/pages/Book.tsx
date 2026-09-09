@@ -1,16 +1,16 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { useMutation } from "convex/react";
 import { motion } from "framer-motion";
 import { CalendarClock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { FolioShell } from "@/components/folio-shell";
 import { useSiteTheme } from "@/hooks/use-site-theme";
 import { MaskText } from "@/components/motion-primitives";
 import { EASE } from "@/lib/motion";
@@ -104,9 +104,130 @@ export default function Book() {
     }
   };
 
+  if (folio) {
+    return (
+      <FolioShell>
+        <div className="fl-wrap fl-sec-head">
+          <span className="fl-mono">04 — APPOINTMENT</span>
+          <span className="fl-mono">
+            {formatDay(date).toUpperCase()} · {time}
+          </span>
+        </div>
+        <div className="fl-wrap fl-page-head">
+          <h1 className="fl-rv">
+            BOOK
+            <br />
+            A CALL
+          </h1>
+          <p className="fl-page-lede fl-rv" style={{ "--d": ".08s" } as CSSProperties}>
+            Pick a slot and tell me what to cover — a <em>new build</em>, an
+            audit of existing code, or an ongoing engagement. Requests are
+            confirmed by email within one business day.
+          </p>
+        </div>
+        {projectSlug && (
+          <div className="fl-wrap">
+            <p className="fl-mono fl-re">RE: /PROJECTS/{projectSlug.toUpperCase()}</p>
+          </div>
+        )}
+        <div className="fl-wrap fl-form-wrap">
+          <form onSubmit={handleSubmit} className="fl-form">
+            <p className="fl-mono fl-form-legend">01 — PICK A SLOT</p>
+            <div className="fl-slot-group">
+              <small className="fl-mono">DAY</small>
+              <div className="fl-slots">
+                {businessDays.map((iso) => (
+                  <button
+                    key={iso}
+                    type="button"
+                    onClick={() => setDate(iso)}
+                    aria-pressed={date === iso}
+                    className={"fl-slot fl-mono" + (date === iso ? " fl-on" : "")}
+                  >
+                    {formatDay(iso).toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="fl-slot-group">
+              <small className="fl-mono">TIME</small>
+              <div className="fl-slots">
+                {TIMES.map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTime(t)}
+                    aria-pressed={time === t}
+                    className={"fl-slot fl-mono" + (time === t ? " fl-on" : "")}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <p className="fl-mono fl-form-legend">02 — YOUR DETAILS</p>
+            <div className="fl-form-row">
+              <div className="fl-field">
+                <Label htmlFor="book-name">Name</Label>
+                <Input
+                  id="book-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Jane Doe"
+                  required
+                  maxLength={100}
+                />
+              </div>
+              <div className="fl-field">
+                <Label htmlFor="book-email">Email</Label>
+                <Input
+                  id="book-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="jane@company.com"
+                  required
+                  maxLength={200}
+                />
+              </div>
+            </div>
+            <div className="fl-field">
+              <Label htmlFor="book-topic">What should we cover?</Label>
+              <Textarea
+                id="book-topic"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                rows={6}
+                maxLength={2000}
+                placeholder="A short brief: the problem, the timeline you have in mind, and anything I should look at beforehand."
+                required
+              />
+            </div>
+            <button type="submit" className="fl-submit fl-mono" disabled={submitting}>
+              {submitting
+                ? "REQUESTING…"
+                : "REQUEST " + formatDay(date).toUpperCase() + " AT " + time + " →"}
+            </button>
+          </form>
+          <aside className="fl-form-aside fl-mono">
+            <small>SELECTED SLOT</small>
+            <div>{formatDay(date).toUpperCase()}</div>
+            <div>{time} — 45 MINUTES</div>
+            <small>FORMAT</small>
+            <div>VIDEO CALL OR VOICE</div>
+            <small>PREFER TO WRITE?</small>
+            <Link className="fl-open" to="/contact">
+              SEND A MESSAGE →
+            </Link>
+          </aside>
+        </div>
+      </FolioShell>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      {folio ? <FolioHeader /> : <SiteHeader />}
+      <SiteHeader />
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-6 pt-16 pb-24 sm:pt-24">
@@ -257,7 +378,7 @@ export default function Book() {
         </div>
       </main>
 
-      {folio ? <FolioFooter /> : <SiteFooter />}
+      <SiteFooter />
     </div>
   );
 }

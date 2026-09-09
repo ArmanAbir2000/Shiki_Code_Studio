@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { FolioLanding } from "@/components/folio-landing";
+import { plateFor } from "@/lib/plates";
 import { useSiteTheme } from "@/hooks/use-site-theme";
 import { ContributionMap } from "@/components/contribution-map";
 import { CountUp, Marquee, MaskText, Reveal } from "@/components/motion-primitives";
@@ -358,14 +359,13 @@ export default function Landing() {
                   to={"/projects/" + p.slug}
                   className="group flex h-full cursor-pointer flex-col bg-background p-8 transition-all duration-300 hover:bg-muted/50"
                 >
-                  {p.cover && (
-                    <img
-                      src={p.cover}
-                      alt=""
-                      loading="lazy"
-                      className="mb-6 aspect-video w-full rounded-lg border border-border/50 object-cover transition-transform duration-300 group-hover:scale-[1.01]"
-                    />
-                  )}
+                  <img
+                    src={p.cover || plateFor(p, i)}
+                    alt=""
+                    loading="lazy"
+                    className="mb-6 aspect-video w-full rounded-lg border border-border/50 object-cover transition-transform duration-300 group-hover:scale-[1.01]"
+                  />
+
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs tabular-nums text-muted-foreground">
                       {p.year}
