@@ -6,6 +6,8 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import { MaskText } from "@/components/motion-primitives";
 import { EASE } from "@/lib/motion";
 import { SITE_URL, useDocumentMeta } from "@/lib/seo";
@@ -44,10 +46,12 @@ export default function BlogPost() {
     title: post ? post.title + " — Shiki Code Studio" : "Writing — Shiki Code Studio",
     description: post?.excerpt || undefined,
   });
+  const { theme } = useSiteTheme();
+  const folio = theme === "folio";
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <SiteHeader />
+      {folio ? <FolioHeader /> : <SiteHeader />}
 
       {post === undefined ? (
         <main className="flex flex-1 items-center justify-center">
@@ -146,7 +150,7 @@ export default function BlogPost() {
         </main>
       )}
 
-      <SiteFooter />
+      {folio ? <FolioFooter /> : <SiteFooter />}
     </div>
   );
 }

@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import { MaskText } from "@/components/motion-primitives";
 import { EASE } from "@/lib/motion";
 import { sendViaWeb3Forms } from "@/lib/web3forms";
@@ -62,6 +64,8 @@ export default function Book() {
     projectSlug ? "Context: project " + projectSlug + ".\n\n" : "",
   );
   const [submitting, setSubmitting] = useState(false);
+  const { theme } = useSiteTheme();
+  const folio = theme === "folio";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,7 +106,7 @@ export default function Book() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <SiteHeader />
+      {folio ? <FolioHeader /> : <SiteHeader />}
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-6xl px-6 pt-16 pb-24 sm:pt-24">
@@ -253,7 +257,7 @@ export default function Book() {
         </div>
       </main>
 
-      <SiteFooter />
+      {folio ? <FolioFooter /> : <SiteFooter />}
     </div>
   );
 }

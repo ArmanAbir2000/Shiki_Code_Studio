@@ -4,6 +4,8 @@ import { ArrowUpRight, Loader2 } from "lucide-react";
 import { Link } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { FolioFooter, FolioHeader } from "@/components/folio-shell";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import { EASE } from "@/lib/motion";
 import { useDocumentMeta } from "@/lib/seo";
 
@@ -22,10 +24,12 @@ export default function Blog() {
   });
 
   const posts = useQuery(api.siteContent.listPosts, {});
+  const { theme } = useSiteTheme();
+  const folio = theme === "folio";
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <SiteHeader />
+      {folio ? <FolioHeader /> : <SiteHeader />}
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-3xl px-6 pt-16 pb-24 sm:pt-24">
@@ -104,7 +108,7 @@ export default function Blog() {
         </div>
       </main>
 
-      <SiteFooter />
+      {folio ? <FolioFooter /> : <SiteFooter />}
     </div>
   );
 }

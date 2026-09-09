@@ -98,7 +98,8 @@ export function FolioLanding({
   projects,
   github,
 }: Props) {
-  const spreads = (projects.length > 0 ? projects : []).slice(0, 6);
+  const spreads = (projects.length > 0 ? projects : []).slice(0, 2);
+  const totalCount = projects.length;
   const mail = socials.email.startsWith("mailto:")
     ? socials.email
     : "mailto:" + socials.email;
@@ -255,6 +256,13 @@ export function FolioLanding({
                 </div>
               </article>
             ))}
+            {totalCount > spreads.length && (
+              <div className="fl-more">
+                <Link className="fl-open" to="/projects">
+                  ALL WORK ({String(totalCount).padStart(2, "0")}) →
+                </Link>
+              </div>
+            )}
           </div>
         </section>
 

@@ -6,6 +6,8 @@ import { Link, useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { FolioShell } from "@/components/folio-shell";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import {
   AppStoreGlyph,
   PlayStoreGlyph,
@@ -53,6 +55,118 @@ export default function Projects() {
       );
     });
   }, [projects, query, activeTag]);
+
+  const { theme } = useSiteTheme();
+  if (theme === "folio") {
+    return (
+      <FolioShell>
+        <div className="fl-wrap fl-sec-head">
+          <span className="fl-mono">02 — FULL ARCHIVE</span>
+          <span className="fl-mono">
+            {filtered.length} SPREAD{filtered.length === 1 ? "" : "S"}
+          </span>
+        </div>
+        <div className="fl-wrap fl-work-intro">
+          <h2>
+            ALL
+            <br />
+            WORK
+          </h2>
+          <p className="fl-mono">
+            EVERY ENTRY REAL SOFTWARE THAT SHIPPED — SEARCH BY NAME,
+            TECHNOLOGY, OR TAG.
+          </p>
+        </div>
+        <div className="fl-wrap fl-archive-tools">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="SEARCH PROJECTS…"
+            className="fl-search fl-mono"
+            aria-label="Search projects"
+          />
+          {tags.length > 0 && (
+            <div className="fl-tagrow">
+              {tags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                  aria-pressed={activeTag === tag}
+                  className={
+                    "fl-tagbtn fl-mono" +
+                    (activeTag === tag ? " fl-on" : "")
+                  }
+                >
+                  {tag.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="fl-wrap">
+          {projects === undefined ? (
+            <p className="fl-mono fl-flat-note">LOADING PROJECTS…</p>
+          ) : filtered.length === 0 ? (
+            <p className="fl-mono fl-flat-note">
+              NO PROJECTS MATCH YOUR SEARCH.
+            </p>
+          ) : (
+            filtered.map((p, i) => (
+              <article key={p._id} className="fl-spread">
+                <div className="fl-num">
+                  {String(i + 1).padStart(2, "0")}
+                  <small>/{String(filtered.length).padStart(2, "0")}</small>
+                </div>
+                <h3 className="fl-title">{p.title}</h3>
+                <p className="fl-tag fl-mono">
+                  {(p.category ?? "FLUTTER APP").toUpperCase()} · {p.year}
+                </p>
+                <div className="fl-body">
+                  <p>{p.summary}</p>
+                </div>
+                <figure className="fl-media">
+                  <div className="fl-plate">
+                    {p.cover ? (
+                      <img src={p.cover} alt="" loading="lazy" />
+                    ) : (
+                      <div className="fl-plate-fb" aria-hidden="true">
+                        <span className="fl-plate-fb-num">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="fl-plate-fb-title">
+                          {p.title.toUpperCase()}
+                        </span>
+                        <span className="fl-plate-fb-tag">
+                          {(p.category ?? "").toUpperCase()} — {p.year}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <figcaption className="fl-cap">
+                    <span>PLATE — {p.title.toUpperCase()}</span>
+                    <span>{p.year}</span>
+                  </figcaption>
+                </figure>
+                <div className="fl-stack fl-mono">
+                  <small>STACK</small>
+                  {(p.stack ?? []).slice(0, 6).join(" · ").toUpperCase()}
+                </div>
+                <div className="fl-side fl-mono">
+                  <span>
+                    TAGS <b>{p.tags.slice(0, 3).join(", ").toUpperCase()}</b>
+                  </span>
+                  <Link className="fl-open" to={"/projects/" + p.slug}>
+                    OPEN CASE →
+                  </Link>
+                </div>
+              </article>
+            ))
+          )}
+        </div>
+      </FolioShell>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">

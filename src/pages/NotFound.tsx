@@ -3,9 +3,29 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { MaskText, Reveal } from "@/components/motion-primitives";
+import { FolioShell } from "@/components/folio-shell";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import { EASE } from "@/lib/motion";
 
 export default function NotFound() {
+  const { theme } = useSiteTheme();
+  if (theme === "folio") {
+    return (
+      <FolioShell>
+        <div className="fl-wrap fl-404">
+          <p className="fl-mono">404 — LOST FOLIO</p>
+          <h1 className="fl-404-title">PAGE NOT FOUND.</h1>
+          <p className="fl-404-sub">
+            The spread you asked for is not in this folio —{" "}
+            <em>back to the index.</em>
+          </p>
+          <Link className="fl-open" to="/">
+            BACK TO INDEX ↑
+          </Link>
+        </div>
+      </FolioShell>
+    );
+  }
   return (
     <motion.div
       initial={{ opacity: 0 }}
