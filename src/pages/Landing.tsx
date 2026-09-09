@@ -7,6 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { FolioLanding } from "@/components/folio-landing";
+import { useSiteTheme } from "@/hooks/use-site-theme";
 import { ContributionMap } from "@/components/contribution-map";
 import { CountUp, Marquee, MaskText, Reveal } from "@/components/motion-primitives";
 import { EASE, fadeUp } from "@/lib/motion";
@@ -121,6 +123,7 @@ function buildStats(
 
 export default function Landing() {
   useDocumentMeta({ title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION });
+  const { theme } = useSiteTheme();
 
   const projects = useQuery(api.portfolio.listProjects, {});
   const ensureSeeded = useMutation(api.portfolio.ensureSeeded);
@@ -201,6 +204,32 @@ export default function Landing() {
     defaultInProgress,
     asInProgress,
   );
+
+  if (theme === "folio") {
+    return (
+      <FolioLanding
+        hero={hero}
+        skills={skills}
+        capabilities={capabilities}
+        about={about}
+        experience={experience}
+        inProgress={inProgress}
+        pricing={pricing}
+        socials={socials}
+        projects={(projects ?? []).map((p) => ({
+          slug: p.slug,
+          title: p.title,
+          summary: p.summary,
+          tags: p.tags ?? [],
+          stack: p.stack ?? p.tags ?? [],
+          year: p.year,
+          category: p.category,
+          cover: p.cover,
+        }))}
+        github={githubCache as never}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
