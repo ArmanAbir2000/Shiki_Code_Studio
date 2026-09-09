@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { FolioGithub } from "@/components/folio-github";
 import { FolioThemeToggle } from "@/components/folio-theme-toggle";
+import { Marquee } from "@/components/motion-primitives";
 import type {
   AboutContent,
   Capability,
@@ -108,21 +109,26 @@ export function FolioLanding({
         <span className="fl-mono">
           <a href="#fl-top">ARMAN ABIR — FLUTTER DEVELOPER</a>
         </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span className="fl-hdr-r fl-mono">
-            DHAKA · <a href="#fl-contact">AVAILABLE</a>
-          </span>
+        <span style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <nav className="fl-nav fl-mono" aria-label="Site">
+            <Link to="/projects">Work</Link>
+            <Link to="/blog">Writing</Link>
+            <Link to="/book">Book</Link>
+            <Link to="/contact">Contact</Link>
+          </nav>
+          <Link className="fl-cta" to="/book">
+            Book a call ↗
+          </Link>
           <FolioThemeToggle />
         </span>
       </header>
 
       <nav className="fl-rail" aria-label="Section index">
         <a href="#fl-work">02 WORK</a>
-        <a href="#fl-tools">03 STACK</a>
-        <a href="#fl-about">04 ABOUT</a>
-        <a href="#fl-services">05 SERVICES</a>
-        <a href="#fl-github">06 GITHUB</a>
-        <a href="#fl-contact">07 CONTACT</a>
+        <a href="#fl-about">03 ABOUT</a>
+        <a href="#fl-services">04 SERVICES</a>
+        <a href="#fl-github">05 GITHUB</a>
+        <a href="#fl-contact">06 CONTACT</a>
       </nav>
 
       <main id="fl-top">
@@ -154,6 +160,19 @@ export function FolioLanding({
             </div>
           </div>
         </section>
+
+        <div className="fl-marquee" aria-hidden="true">
+          <div className="fl-wrap">
+            <Marquee
+              duration={36}
+              items={skills.map((s) => (
+                <span key={s} className="fl-mono fl-marquee-item">
+                  {s.toUpperCase()}
+                </span>
+              ))}
+            />
+          </div>
+        </div>
 
         <section className="fl-sec" aria-label="Manifesto">
           <div className="fl-wrap fl-sec-head">
@@ -239,31 +258,9 @@ export function FolioLanding({
           </div>
         </section>
 
-        <section className="fl-sec" id="fl-tools" aria-label="Technology index">
-          <div className="fl-wrap fl-sec-head">
-            <span className="fl-mono">03 — TECHNOLOGY INDEX</span>
-            <span className="fl-mono">NO SKILL BARS</span>
-          </div>
-          <div className="fl-wrap fl-tools">
-            <div className="fl-flow">
-              {skills.map((s, i) => (
-                <span key={s + i} className={"fl-ti fl-t" + ((i % 3) + 1)}>
-                  {s.toUpperCase()} <em>{String(i + 1).padStart(2, "0")}</em>
-                </span>
-              ))}
-            </div>
-            <div className="fl-tools-note fl-mono">
-              <span>
-                <b>TOOLS ARE MATERIALS.</b> THE PRODUCT IS THE RESULT.
-              </span>
-              <span>SCALE = DEPTH OF USE</span>
-            </div>
-          </div>
-        </section>
-
         <section className="fl-sec" id="fl-about" aria-label="About">
           <div className="fl-wrap fl-sec-head">
-            <span className="fl-mono">04 — ABOUT</span>
+            <span className="fl-mono">03 — ABOUT</span>
             <span className="fl-mono">THE AUTHOR</span>
           </div>
           <div className="fl-wrap fl-about">
@@ -315,7 +312,7 @@ export function FolioLanding({
 
         <section className="fl-sec" id="fl-services" aria-label="Services">
           <div className="fl-wrap fl-sec-head">
-            <span className="fl-mono">05 — SERVICES</span>
+            <span className="fl-mono">04 — SERVICES</span>
             <span className="fl-mono">ENGAGEMENT INDEX</span>
           </div>
           <div className="fl-wrap fl-services">
@@ -346,7 +343,7 @@ export function FolioLanding({
 
         <section className="fl-sec" aria-label="Current work">
           <div className="fl-wrap fl-sec-head">
-            <span className="fl-mono">09 — CURRENT DESK</span>
+            <span className="fl-mono">CURRENT DESK</span>
             <span className="fl-mono">LIVE FIELD NOTES</span>
           </div>
           <div className="fl-wrap fl-now">
@@ -374,7 +371,7 @@ export function FolioLanding({
 
         <section className="fl-sec" id="fl-github" aria-label="GitHub activity">
           <div className="fl-wrap fl-sec-head">
-            <span className="fl-mono">06 — GITHUB</span>
+            <span className="fl-mono">05 — GITHUB</span>
             <span className="fl-mono">CONTRIBUTION INDEX</span>
           </div>
           <div className="fl-wrap fl-gh">
@@ -392,7 +389,7 @@ export function FolioLanding({
 
         <section className="fl-sec" id="fl-contact" aria-label="Contact">
           <div className="fl-wrap fl-sec-head">
-            <span className="fl-mono">07 — CONTACT</span>
+            <span className="fl-mono">06 — CONTACT</span>
             <span className="fl-mono">END OF FOLIO</span>
           </div>
           <div className="fl-wrap">
