@@ -59,6 +59,31 @@ export function FolioFx() {
       document.body.classList.add("fl-loaded");
     }
 
+    /* ---- touch stand-in for the hover choreography ----
+       The plate physics and the outline fills are driven by :hover, so a
+       phone never sees the folio's signature motion. On a coarse pointer,
+       drive the same states from scroll position: an element lights up
+       while it sits in the middle band of the viewport. */
+    const LIVE_SEL = ".fl-media, .fl-cs-bleed, .fl-big, .fl-words .fl-outline";
+    const liveSeen = new WeakSet<Element>();
+    let liveIo: IntersectionObserver | null = null;
+    if (!fine && !reduced && "IntersectionObserver" in window) {
+      liveIo = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) =>
+            en.target.classList.toggle("fl-live", en.isIntersecting),
+          );
+        },
+        { rootMargin: "-28% 0px -28% 0px" },
+      );
+      cleanups.push(() => liveIo?.disconnect());
+    }
+    const liveOn = (el: Element) => {
+      if (!liveIo || liveSeen.has(el)) return;
+      liveSeen.add(el);
+      liveIo.observe(el);
+    };
+
     /* ---- scroll reveals (also catches nodes added later, e.g. Convex data) ---- */
     const rvSeen = new WeakSet<Element>();
     let io: IntersectionObserver | null = null;
@@ -89,6 +114,8 @@ export function FolioFx() {
             if (!(node instanceof Element)) return;
             if (node.classList.contains("fl-rv")) revealOn(node);
             node.querySelectorAll?.(".fl-rv").forEach(revealOn);
+            if (node.matches?.(LIVE_SEL)) liveOn(node);
+            node.querySelectorAll?.(LIVE_SEL).forEach(liveOn);
           });
         });
       });
@@ -98,6 +125,7 @@ export function FolioFx() {
         io?.disconnect();
       });
     }
+    Array.from(document.querySelectorAll(LIVE_SEL)).forEach(liveOn);
 
     /* ---- progress bar + scrolled flag + rail spy ---- */
     const prog = document.querySelector(".fl-prog") as HTMLElement | null;

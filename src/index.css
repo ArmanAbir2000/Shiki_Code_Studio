@@ -3043,8 +3043,13 @@ body.fl-scrolled .fl-cue {
   z-index: 1;
   transition: transform 0.5s cubic-bezier(0.22, 0.8, 0.22, 1);
 }
+/* .fl-live is the touch equivalent of :hover — folio-fx sets it while an
+   element passes the middle of the viewport, so a phone gets the same
+   choreography a mouse gets on hover. */
 .fl-media:hover .fl-plate::before,
-.fl-cs-bleed:hover .fl-plate::before {
+.fl-media.fl-live .fl-plate::before,
+.fl-cs-bleed:hover .fl-plate::before,
+.fl-cs-bleed.fl-live .fl-plate::before {
   opacity: 0.9;
   transform: translate(2%, 2%);
 }
@@ -3052,8 +3057,16 @@ body.fl-scrolled .fl-cue {
 .fl-cs-bleed:hover .fl-plate::after {
   opacity: 0.26;
 }
+/* Lighter than the hover tint: on a phone every plate passes through this
+   state as you scroll, so it reads as a pass rather than a hold. */
+.fl-media.fl-live .fl-plate::after,
+.fl-cs-bleed.fl-live .fl-plate::after {
+  opacity: 0.16;
+}
 .fl-media:hover img,
-.fl-cs-bleed:hover img {
+.fl-media.fl-live img,
+.fl-cs-bleed:hover img,
+.fl-cs-bleed.fl-live img {
   transform: translate(-1.4%, -1.4%) scale(1.015);
 }
 html[data-theme="folio"].dark .fl-plate::after {
@@ -3066,11 +3079,13 @@ html[data-theme="folio"].dark .fl-plate::after {
     -webkit-text-stroke-color 0.35s;
 }
 span.fl-outline:hover,
-a .fl-outline:hover {
+a .fl-outline:hover,
+.fl-words .fl-outline.fl-live {
   color: var(--primary);
   -webkit-text-stroke-color: var(--primary);
 }
-.fl-big:hover .fl-outline {
+.fl-big:hover .fl-outline,
+.fl-big.fl-live .fl-outline {
   color: var(--foreground);
   -webkit-text-stroke-color: var(--foreground);
 }
