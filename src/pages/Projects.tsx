@@ -6,6 +6,7 @@ import { Link, useSearchParams } from "react-router";
 import { api } from "@/convex/_generated/api";
 import { Input } from "@/components/ui/input";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { folioPlate } from "@/components/folio-landing";
 import { FolioShell } from "@/components/folio-shell";
 import { useSiteTheme } from "@/hooks/use-site-theme";
 import {
@@ -127,21 +128,11 @@ export default function Projects() {
                 </div>
                 <figure className="fl-media fl-rv">
                   <div className="fl-plate">
-                    {p.cover ? (
-                      <img src={p.cover} alt="" loading="lazy" />
-                    ) : (
-                      <div className="fl-plate-fb" aria-hidden="true">
-                        <span className="fl-plate-fb-num">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="fl-plate-fb-title">
-                          {p.title.toUpperCase()}
-                        </span>
-                        <span className="fl-plate-fb-tag">
-                          {(p.category ?? "").toUpperCase()} — {p.year}
-                        </span>
-                      </div>
-                    )}
+                    <img
+                      src={p.cover || folioPlate(i)}
+                      alt={p.cover ? "" : p.title + " — sample plate"}
+                      loading="lazy"
+                    />
                   </div>
                   <figcaption className="fl-cap">
                     <span>PLATE — {p.title.toUpperCase()}</span>

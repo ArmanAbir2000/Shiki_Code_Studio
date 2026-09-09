@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { folioPlate } from "@/components/folio-landing";
 import { FolioFx } from "@/components/folio-fx";
 import { FolioThemeToggle } from "@/components/folio-theme-toggle";
 import { ProjectVideo } from "@/components/project-video";
@@ -25,20 +26,16 @@ export type FolioDetailProject = {
 };
 
 function Bleed({ p }: { p: FolioDetailProject }) {
-  if (p.cover) {
-    return (
-      <div className="fl-plate fl-cs-bleed-plate">
-        <img src={p.cover} alt={p.title + " — case spread"} loading="lazy" />
-      </div>
-    );
-  }
+  const sample = folioPlate(p.slug.length);
   return (
-    <div className="fl-plate fl-cs-bleed-fb" aria-hidden="true">
-      <span className="fl-plate-fb-num">{p.year}</span>
-      <span className="fl-plate-fb-title">{p.title.toUpperCase()}</span>
-      <span className="fl-plate-fb-tag">
-        {(p.category ?? "").toUpperCase()} — {(p.stack ?? []).slice(0, 4).join(" · ").toUpperCase()}
-      </span>
+    <div className="fl-plate fl-cs-bleed-plate">
+      <img
+        src={p.cover || sample}
+        alt={
+          p.cover ? p.title + " — case spread" : p.title + " — sample plate"
+        }
+        loading="lazy"
+      />
     </div>
   );
 }

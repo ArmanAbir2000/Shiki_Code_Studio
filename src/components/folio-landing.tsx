@@ -53,24 +53,24 @@ type Props = {
 
 const VARIANTS = ["fl-a", "fl-b", "fl-c"] as const;
 
+/** Sample plates shown until the owner uploads real covers. */
+export function folioPlate(index: number): string {
+  const base = import.meta.env.VITE_BASE_PATH || "/";
+  const prefix = base.endsWith("/") ? base : base + "/";
+  return prefix + "plates/plate-" + ((index % 6) + 1) + ".svg";
+}
+
 function SpreadMedia({ p, index }: { p: FolioProject; index: number }) {
   const second = p.shots?.[0];
   return (
     <figure className="fl-media fl-rv" style={{ "--d": ".1s" } as CSSProperties}>
       <div className="fl-plate">
-        {p.cover ? (
-          <img src={p.cover} alt="" loading="lazy" decoding="async" />
-        ) : (
-          <div className="fl-plate-fb" aria-hidden="true">
-            <span className="fl-plate-fb-num">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="fl-plate-fb-title">{p.title.toUpperCase()}</span>
-            <span className="fl-plate-fb-tag">
-              {(p.category ?? "FLUTTER APP").toUpperCase()} — {p.year ?? ""}
-            </span>
-          </div>
-        )}
+        <img
+          src={p.cover || folioPlate(index)}
+          alt={p.cover ? "" : p.title + " — sample plate"}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <figcaption className="fl-cap">
         <span>PLATE — {p.title.toUpperCase()}</span>
@@ -306,21 +306,21 @@ export function FolioLanding({
               ))}
             </div>
             <div className="fl-side-col">
-              {about.photoUrl && (
-                <figure>
-                  <div className="fl-plate">
-                    <img
-                      src={about.photoUrl}
-                      alt="Arman Abir"
-                      loading="lazy"
-                    />
-                  </div>
-                  <figcaption className="fl-cap">
-                    <span>THE AUTHOR — PLATE</span>
-                    <span>DHAKA, 2026</span>
-                  </figcaption>
-                </figure>
-              )}
+              <figure>
+                <div className="fl-plate">
+                  <img
+                    src={about.photoUrl || folioPlate(1)}
+                    alt={
+                      about.photoUrl ? "Arman Abir" : "Author — sample plate"
+                    }
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption className="fl-cap">
+                  <span>THE AUTHOR — PLATE</span>
+                  <span>DHAKA, 2026</span>
+                </figcaption>
+              </figure>
               <div className="fl-list fl-mono">
                 <small>SERVICES</small>
                 {capabilities.slice(0, 4).map((c) => (
