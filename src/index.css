@@ -1890,8 +1890,8 @@ html[data-theme="folio"].dark body::before {
 .fl-cta {
   display: inline-flex;
   align-items: center;
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--primary);
+  color: var(--primary-foreground);
   font-family: "Space Mono", monospace;
   font-size: 10px;
   font-weight: 700;
@@ -1900,10 +1900,11 @@ html[data-theme="folio"].dark body::before {
   text-decoration: none;
   padding: 9px 14px;
   white-space: nowrap;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 .fl-cta:hover {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: var(--foreground);
+  color: var(--background);
 }
 /* Stack marquee under the hero — same component as the base design,
    restyled with folio rules instead of its own section. */
@@ -2082,7 +2083,8 @@ html[data-theme="folio"] * {
   }
 }
 .fl-hero {
-  min-height: 92vh;
+  min-height: calc(100svh - 57px);
+  min-height: calc(100dvh - 57px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
