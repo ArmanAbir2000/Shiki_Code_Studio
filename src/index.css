@@ -2471,6 +2471,209 @@ html[data-theme="folio"] * {
 .fl-gh-repos a:hover {
   color: var(--primary);
 }
+.fl-gh-lede {
+  max-width: 40ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  margin-bottom: 1.4rem;
+}
+.fl-gh-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem 2rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.2rem 0;
+  margin-bottom: 1.6rem;
+}
+.fl-gh-stat b {
+  display: block;
+  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.fl-gh-stat span {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.fl-gh-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.fl-gh-map {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: max-content;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.fl-gh-days {
+  display: grid;
+  grid-template-rows: 15px repeat(7, 9px);
+  gap: 2.5px;
+  width: 24px;
+  color: var(--muted-foreground);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.fl-gh-days span {
+  grid-row: span 1;
+}
+.fl-gh-days span:nth-child(1) {
+  grid-row: 2;
+}
+.fl-gh-days span:nth-child(2) {
+  grid-row: 4;
+}
+.fl-gh-days span:nth-child(3) {
+  grid-row: 6;
+}
+.fl-gh-cols {
+  display: flex;
+  gap: 2.5px;
+}
+.fl-gh-col {
+  display: grid;
+  grid-template-rows: 15px repeat(7, 9px);
+  gap: 2.5px;
+}
+.fl-gh-m {
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted-foreground);
+  line-height: 1;
+  padding-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.fl-ghc {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: block;
+}
+.fl-ghc.fl-l0,
+.fl-ghc.fl-off {
+  background: color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+.fl-ghc.fl-off {
+  background: transparent;
+}
+.fl-ghc.fl-l1 {
+  background: color-mix(in oklab, var(--primary) 22%, transparent);
+}
+.fl-ghc.fl-l2 {
+  background: color-mix(in oklab, var(--primary) 42%, transparent);
+}
+.fl-ghc.fl-l3 {
+  background: color-mix(in oklab, var(--primary) 68%, transparent);
+}
+.fl-ghc.fl-l4 {
+  background: var(--primary);
+}
+.fl-gh-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 10px;
+  color: var(--muted-foreground);
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+}
+.fl-gh-legend .fl-ghc {
+  width: 10px;
+  height: 10px;
+}
+.fl-gh-cta {
+  margin-top: 1.5rem;
+}
+.fl-gh-cta a {
+  display: inline-flex;
+  border: 1px solid var(--foreground);
+  padding: 12px 16px;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--foreground);
+  text-decoration: none;
+}
+.fl-gh-cta a:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+.fl-gh-repos-full {
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+.fl-gh-repos-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--muted-foreground);
+}
+.fl-gh-repo {
+  display: grid;
+  grid-template-columns: minmax(130px, 1.2fr) minmax(0, 2fr) auto;
+  gap: 14px;
+  align-items: baseline;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+}
+.fl-gh-repo b {
+  font-size: 1.1rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+.fl-gh-repo:hover b {
+  color: var(--primary);
+}
+.fl-gr-url {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fl-gr-link {
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .fl-gh-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fl-gh-repo {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
 .fl-big {
   display: block;
   text-decoration: none;

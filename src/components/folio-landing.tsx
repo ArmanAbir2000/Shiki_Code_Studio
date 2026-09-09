@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ContributionMap } from "@/components/contribution-map";
+import { FolioGithub } from "@/components/folio-github";
 import type {
   AboutContent,
   Capability,
@@ -28,6 +28,8 @@ export type FolioGithub = {
   total?: number;
   days?: { date: string; count: number }[];
   contributedTo?: string[];
+  publicRepos?: number;
+  topRepos?: string[];
 } | null;
 
 type Props = {
@@ -76,17 +78,6 @@ export function FolioLanding({
   const mail = socials.email.startsWith("mailto:")
     ? socials.email
     : "mailto:" + socials.email;
-  const ghTotal =
-    github && typeof github.totalContributions === "number"
-      ? github.totalContributions
-      : github && typeof github.total === "number"
-        ? github.total
-        : null;
-  const ghRepos = (github?.contributedTo ?? []).slice(0, 8);
-  const since =
-    github && typeof github.memberSince === "string"
-      ? new Date(github.memberSince).getFullYear()
-      : null;
 
   return (
     <div className="fl-root">
@@ -366,43 +357,10 @@ export function FolioLanding({
               <br />
               <em>record</em>.
             </p>
-            <div>
-              <div className="fl-gh-stats">
-                <div>
-                  <b>{ghTotal !== null ? ghTotal + "+" : "—"}</b>
-                  <span className="fl-mono">CONTRIBUTIONS</span>
-                </div>
-                <div>
-                  <b>{ghRepos.length > 0 ? ghRepos.length + "+" : "—"}</b>
-                  <span className="fl-mono">REPOSITORIES</span>
-                </div>
-                <div>
-                  <b>{since ?? "—"}</b>
-                  <span className="fl-mono">SHIPPING SINCE</span>
-                </div>
-              </div>
-              {github?.days && (
-                <div className="fl-gh-map">
-                  <ContributionMap
-                    data={{ total: ghTotal ?? 0, days: github.days }}
-                  />
-                </div>
-              )}
-              {ghRepos.length > 0 && (
-                <div className="fl-gh-repos fl-mono">
-                  {ghRepos.map((repo) => (
-                    <a
-                      key={repo}
-                      href={"https://github.com/" + repo}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {repo.toUpperCase()} ↗
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
+            <FolioGithub cache={github} />
+          </div>
+          <div className="fl-wrap">
+            <div style={{ height: "3rem" }} />
           </div>
         </section>
 
